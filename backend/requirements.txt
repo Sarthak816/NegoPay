@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+razorpay
+sqlalchemy
+pydantic
+python-dotenv
+mcp
+langgraph
+langchain-openai
+langchain-anthropic

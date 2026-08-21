@@ -1,0 +1,502 @@
+[
+  {
+    "id": "prod_boat_airdopes_141",
+    "merchant_id": "soundstore",
+    "name": "boAt Airdopes 141 True Wireless Earbuds",
+    "description": "boAt Airdopes 141 with 42 hours total playtime, 8mm dynamic drivers, ENx noise-cancelling mics for clear calls, Beast Mode 80ms low latency for gaming, and ASAP charge support (5 min = 75 min).",
+    "price": 1299.0,
+    "category": "Audio",
+    "tags": ["earbuds", "tws", "wireless", "boat", "bluetooth", "budget"],
+    "stock": 45
+  },
+  {
+    "id": "prod_sony_wh1000xm5",
+    "merchant_id": "soundstore",
+    "name": "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
+    "description": "Industry-leading noise canceling with two processors and 8 microphones. Hi-Res Audio wireless support with LDAC, 30-hour battery life, speak-to-chat, and ultra-comfortable lightweight design.",
+    "price": 26990.0,
+    "category": "Audio",
+    "tags": ["headphones", "anc", "sony", "premium", "wireless", "bluetooth"],
+    "stock": 12
+  },
+  {
+    "id": "prod_jbl_flip6",
+    "merchant_id": "soundstore",
+    "name": "JBL Flip 6 Portable Bluetooth Speaker",
+    "description": "Rugged IP67 waterproof and dustproof portable speaker delivering powerful JBL Original Pro Sound with exceptional clarity through a 2-way speaker system. 12 hours of playtime.",
+    "price": 9999.0,
+    "category": "Audio",
+    "tags": ["speaker", "bluetooth", "jbl", "waterproof", "portable", "outdoor"],
+    "stock": 25
+  },
+  {
+    "id": "prod_sennheiser_hd450se",
+    "merchant_id": "soundstore",
+    "name": "Sennheiser HD 450SE Bluetooth Wireless Over-Ear Headphones",
+    "description": "Active noise cancellation for uninterrupted listening pleasure. Superior wireless sound with deep dynamic bass and high-quality codec support including AAC and AptX Low Latency. 30h battery life.",
+    "price": 7490.0,
+    "category": "Audio",
+    "tags": ["headphones", "sennheiser", "anc", "wireless", "audiophile"],
+    "stock": 0
+  },
+  {
+    "id": "prod_marshall_emberton2",
+    "merchant_id": "soundstore",
+    "name": "Marshall Emberton II Portable Bluetooth Speaker",
+    "description": "Compact portable speaker with rich, clear, and loud sound. True Stereophonic 360 sound experience with 30+ hours of playtime and IP67 dust-and-water resistance rating in classic Marshall vinyl finish.",
+    "price": 14999.0,
+    "category": "Audio",
+    "tags": ["speaker", "marshall", "vintage", "premium", "portable", "waterproof"],
+    "stock": 18
+  },
+  {
+    "id": "prod_realme_buds_air5_pro",
+    "merchant_id": "soundstore",
+    "name": "Realme Buds Air 5 Pro ANC Earbuds",
+    "description": "50dB Active Noise Cancellation with 4000Hz ultra-wide band noise reduction, dual dynamic drivers (11mm bass + 6mm micro-planar tweeter), LDAC HD audio codec, and 40-hour total playback.",
+    "price": 4999.0,
+    "category": "Audio",
+    "tags": ["earbuds", "tws", "anc", "realme", "ldac", "budget-flagship"],
+    "stock": 30
+  },
+  {
+    "id": "prod_bose_quietcomfort_45",
+    "merchant_id": "soundstore",
+    "name": "Bose QuietComfort 45 Bluetooth Wireless Noise Cancelling Headphones",
+    "description": "Iconic quiet, comfort, and sound. World-class acoustic noise cancelling technology, TriPort acoustic architecture for deep sound, lightweight luxury materials, and 24 hours of battery life.",
+    "price": 21900.0,
+    "category": "Audio",
+    "tags": ["headphones", "bose", "anc", "travel", "comfortable", "premium"],
+    "stock": 8
+  },
+  {
+    "id": "prod_shure_sm7b",
+    "merchant_id": "soundstore",
+    "name": "Shure SM7B Vocal Dynamic Microphone",
+    "description": "Legendary studio cardioid dynamic microphone delivering warm and smooth vocal reproduction for broadcast, podcasting, and studio recording with built-in electromagnetic shielding.",
+    "price": 34500.0,
+    "category": "Audio",
+    "tags": ["microphone", "studio", "shure", "podcast", "professional", "vocal"],
+    "stock": 5
+  },
+  {
+    "id": "prod_audio_technica_m50x",
+    "merchant_id": "soundstore",
+    "name": "Audio-Technica ATH-M50x Professional Studio Monitor Headphones",
+    "description": "Critically acclaimed professional monitor headphones featuring 45mm large-aperture drivers, 90-degree swiveling earcups, sound isolating earcups, and detachable cables for tracking and mixing.",
+    "price": 11500.0,
+    "category": "Audio",
+    "tags": ["headphones", "studio", "audio-technica", "wired", "audiophile", "monitor"],
+    "stock": 22
+  },
+  {
+    "id": "prod_boult_audio_z40",
+    "merchant_id": "soundstore",
+    "name": "Boult Audio Z40 True Wireless Earbuds",
+    "description": "60 hours total playtime with fast Type-C charging, Zen quad-mic ENC for crystal-clear calling, low latency combat mode for mobile gaming, and 10mm BoomX drivers.",
+    "price": 1199.0,
+    "category": "Audio",
+    "tags": ["earbuds", "tws", "boult", "budget", "bluetooth", "bass"],
+    "stock": 50
+  },
+  {
+    "id": "prod_rode_nt_usb_mini",
+    "merchant_id": "soundstore",
+    "name": "Rode NT-USB Mini Studio Condenser USB Microphone",
+    "description": "Compact studio-grade USB microphone designed for podcasting, streaming, gaming, and voiceover. Features built-in pop filter, magnetic detachable desk stand, and zero-latency headphone monitoring.",
+    "price": 8900.0,
+    "category": "Audio",
+    "tags": ["microphone", "usb", "rode", "streaming", "podcast", "gaming"],
+    "stock": 14
+  },
+  {
+    "id": "prod_sony_srs_xb100",
+    "merchant_id": "soundstore",
+    "name": "Sony SRS-XB100 Wireless Extra Bass Portable Speaker",
+    "description": "Ultra-compact and durable wireless speaker with sound diffusion processor, deep punchy Extra Bass, IP67 waterproof/dustproof rating, and versatile multi-way strap. 16-hour battery.",
+    "price": 3990.0,
+    "category": "Audio",
+    "tags": ["speaker", "sony", "portable", "bluetooth", "waterproof", "compact"],
+    "stock": 35
+  },
+  {
+    "id": "prod_apple_airpods_pro_2",
+    "merchant_id": "soundstore",
+    "name": "Apple AirPods Pro (2nd Generation) with USB-C MagSafe Case",
+    "description": "Up to 2x more Active Noise Cancellation with Apple H2 chip, Adaptive Audio, Transparency mode, Personalized Spatial Audio with dynamic head tracking, and dust, sweat, and water resistance (IP54).",
+    "price": 22900.0,
+    "category": "Audio",
+    "tags": ["earbuds", "apple", "anc", "airpods", "ios", "premium", "spatial-audio"],
+    "stock": 16
+  },
+  {
+    "id": "prod_fiio_ka13_dac",
+    "merchant_id": "soundstore",
+    "name": "FiiO KA13 Portable DAC & Headphone Amplifier",
+    "description": "Dual CS43131 DAC chips with 550mW desktop mode power output, 3.5mm single-ended and 4.4mm balanced dual outputs, PCM 384kHz/32bit and DSD256 decoding for audiophile high-res listening.",
+    "price": 6999.0,
+    "category": "Audio",
+    "tags": ["dac", "amp", "fiio", "audiophile", "hifi", "type-c"],
+    "stock": 9
+  },
+  {
+    "id": "prod_noise_pure_pods",
+    "merchant_id": "soundstore",
+    "name": "Noise Pure Pods Open-Ear OWS Wireless Earphones",
+    "description": "Open-ear wireless earbuds powered by AirWave technology with detachable band, 16mm neodymium drivers, 80-hour total battery life, quad-mic ENC, and IPX5 water resistance.",
+    "price": 2499.0,
+    "category": "Audio",
+    "tags": ["earphones", "open-ear", "noise", "ows", "fitness", "bluetooth"],
+    "stock": 0
+  },
+  {
+    "id": "prod_tribit_stormbox_blast",
+    "merchant_id": "soundstore",
+    "name": "Tribit StormBox Blast 90W Portable Party Speaker",
+    "description": "90W loud stereo sound with XBass body-shaking bass, LED light sync with music beats, 30 hours of playback time, powerbank function, and IPX7 waterproof design for beach and poolside parties.",
+    "price": 17499.0,
+    "category": "Audio",
+    "tags": ["speaker", "boombox", "tribit", "party", "heavy-bass", "waterproof"],
+    "stock": 7
+  },
+  {
+    "id": "prod_keychron_k2_v2",
+    "merchant_id": "techmart",
+    "name": "Keychron K2 V2 Wireless Mechanical Keyboard",
+    "description": "75% layout compact Bluetooth mechanical keyboard with Gateron G Pro Brown switches, RGB backlighting, Mac and Windows compatibility, 4000mAh battery, and hot-swappable PCB option.",
+    "price": 8499.0,
+    "category": "Electronics",
+    "tags": ["keyboard", "mechanical", "keychron", "wireless", "bluetooth", "mac", "rgb"],
+    "stock": 20
+  },
+  {
+    "id": "prod_logitech_mx_master_3s",
+    "merchant_id": "techmart",
+    "name": "Logitech MX Master 3S Wireless Performance Mouse",
+    "description": "Ergonomic precision wireless mouse featuring 8K DPI any-surface glass tracking, Quiet Clicks acoustic dampening, MagSpeed electromagnetic scrolling wheel, and Flow cross-computer control.",
+    "price": 9495.0,
+    "category": "Electronics",
+    "tags": ["mouse", "logitech", "ergonomic", "productivity", "wireless", "bluetooth"],
+    "stock": 28
+  },
+  {
+    "id": "prod_anker_737_powerbank",
+    "merchant_id": "techmart",
+    "name": "Anker 737 Power Bank (PowerCore 24K 140W)",
+    "description": "24,000mAh portable ultra-powerful battery pack with 140W two-way fast charging, smart digital color display showing output/input power, and multi-device PD 3.1 charging capability.",
+    "price": 11999.0,
+    "category": "Electronics",
+    "tags": ["powerbank", "anker", "fast-charging", "140w", "usb-c", "portable"],
+    "stock": 15
+  },
+  {
+    "id": "prod_samsung_t7_shield_1tb",
+    "merchant_id": "techmart",
+    "name": "Samsung T7 Shield 1TB Portable External SSD",
+    "description": "Rugged external solid state drive with IP65 dust and water resistance, drop protection up to 3 meters, transfer speeds up to 1050 MB/s over USB 3.2 Gen 2 Type-C.",
+    "price": 9299.0,
+    "category": "Electronics",
+    "tags": ["storage", "ssd", "samsung", "portable", "rugged", "usb-c"],
+    "stock": 32
+  },
+  {
+    "id": "prod_ugreen_nexode_100w",
+    "merchant_id": "techmart",
+    "name": "UGREEN Nexode 100W 4-Port GaN Fast Charger",
+    "description": "GaN II tabletop fast wall charger with 3 USB-C ports and 1 USB-A port. Delivers high-speed PD 100W power distribution to laptops, tablets, smartphones, and accessories simultaneously.",
+    "price": 4999.0,
+    "category": "Electronics",
+    "tags": ["charger", "gan", "ugreen", "100w", "fast-charging", "usb-c"],
+    "stock": 40
+  },
+  {
+    "id": "prod_dell_ultrasharp_27_4k",
+    "merchant_id": "techmart",
+    "name": "Dell UltraSharp 27-inch 4K UHD USB-C Hub Monitor (U2723QE)",
+    "description": "27-inch 4K display featuring IPS Black technology with 2000:1 contrast ratio, 98% DCI-P3 color gamut, VESA DisplayHDR 400, integrated 90W USB-C hub, RJ45 Ethernet, and Daisy Chain.",
+    "price": 52990.0,
+    "category": "Electronics",
+    "tags": ["monitor", "4k", "dell", "ultrasharp", "ips", "productivity", "usb-c"],
+    "stock": 6
+  },
+  {
+    "id": "prod_raspberry_pi_5_8gb",
+    "merchant_id": "techmart",
+    "name": "Raspberry Pi 5 Single Board Computer (8GB RAM)",
+    "description": "Next-generation single-board computer featuring Broadcom BCM2712 quad-core 64-bit Arm Cortex-A76 processor @ 2.4GHz, dual 4K micro-HDMI, PCIe 2.0 interface, and Gigabit Ethernet.",
+    "price": 7899.0,
+    "category": "Electronics",
+    "tags": ["computer", "raspberry-pi", "sbc", "diy", "iot", "linux"],
+    "stock": 0
+  },
+  {
+    "id": "prod_apple_watch_se2",
+    "merchant_id": "techmart",
+    "name": "Apple Watch SE (2nd Gen, GPS 44mm)",
+    "description": "Essential smartwatch features with crash detection, heart rate monitoring, sleep stages tracking, Retina OLED display, swimproof 50m water resistance, and S8 SiP dual-core processor.",
+    "price": 27900.0,
+    "category": "Electronics",
+    "tags": ["smartwatch", "apple", "wearable", "fitness", "gps", "health"],
+    "stock": 11
+  },
+  {
+    "id": "prod_kindle_paperwhite_11",
+    "merchant_id": "techmart",
+    "name": "Amazon Kindle Paperwhite (16GB) 6.8-inch Display",
+    "description": "Now with a 6.8-inch glare-free 300 ppi display, adjustable warm light, up to 10 weeks of battery life, IPX8 waterproof rating, and 20% faster page turns for book lovers.",
+    "price": 14999.0,
+    "category": "Electronics",
+    "tags": ["kindle", "ereader", "amazon", "books", "tablet", "paperwhite"],
+    "stock": 24
+  },
+  {
+    "id": "prod_garmin_forerunner_265",
+    "merchant_id": "techmart",
+    "name": "Garmin Forerunner 265 GPS Running Smartwatch",
+    "description": "Brilliant AMOLED touchscreen display with advanced training metrics, HRV status, recovery insights, multi-band GNSS GPS, up to 13 days of battery in smartwatch mode, and music storage.",
+    "price": 46990.0,
+    "category": "Sports",
+    "tags": ["smartwatch", "garmin", "running", "gps", "fitness", "sports", "amoled"],
+    "stock": 7
+  },
+  {
+    "id": "prod_elgato_stream_deck_mk2",
+    "merchant_id": "techmart",
+    "name": "Elgato Stream Deck MK.2 Studio Controller",
+    "description": "15 customizable LCD keys to trigger unlimited actions with one touch. Control OBS, Twitch, YouTube, Spotify, Philips Hue, smart home, and productivity apps with detachable faceplate and stand.",
+    "price": 13999.0,
+    "category": "Electronics",
+    "tags": ["streaming", "elgato", "creator", "controller", "productivity", "macro"],
+    "stock": 19
+  },
+  {
+    "id": "prod_sandisk_extreme_pro_128",
+    "merchant_id": "techmart",
+    "name": "SanDisk Extreme PRO 128GB UHS-I SDXC Memory Card",
+    "description": "High-speed SD card with up to 200MB/s read and 90MB/s write speeds, V30 and U3 ratings for flawless 4K UHD video recording, shockproof, temperature-proof, and X-ray proof.",
+    "price": 1999.0,
+    "category": "Electronics",
+    "tags": ["memory-card", "sandisk", "sdcard", "photography", "camera", "4k"],
+    "stock": 60
+  },
+  {
+    "id": "prod_peak_design_everyday_backpack_20l",
+    "merchant_id": "techmart",
+    "name": "Peak Design Everyday Backpack 20L V2",
+    "description": "Iconic award-winning everyday camera and gear pack with MagLatch hardware, weatherproof 100% recycled 400D nylon canvas shell, FlexFold customizable dividers, and dedicated 15-inch laptop sleeve.",
+    "price": 24999.0,
+    "category": "Clothing",
+    "tags": ["backpack", "peak-design", "camera-bag", "gear", "weatherproof", "travel"],
+    "stock": 10
+  },
+  {
+    "id": "prod_baseus_blade_powerbank_100w",
+    "merchant_id": "techmart",
+    "name": "Baseus Blade 100W Ultra-Slim Laptop Power Bank",
+    "description": "Ultra-thin 18mm 20,000mAh power bank designed for laptop portability. Dual USB-C and dual USB-A ports with real-time numeric power and time-remaining digital LED display.",
+    "price": 6499.0,
+    "category": "Electronics",
+    "tags": ["powerbank", "baseus", "100w", "laptop-charger", "slim", "usb-c"],
+    "stock": 0
+  },
+  {
+    "id": "prod_caldigit_ts4_dock",
+    "merchant_id": "techmart",
+    "name": "CalDigit TS4 Thunderbolt 4 Dock (18 Ports, 98W Charging)",
+    "description": "Ultimate Thunderbolt 4 dock featuring 18 connectivity ports including 2.5GbE Ethernet, UHS-II SD/microSD slots, DisplayPort 1.4, three Thunderbolt 4 ports, and 98W host laptop charging.",
+    "price": 38900.0,
+    "category": "Electronics",
+    "tags": ["dock", "thunderbolt", "caldigit", "hub", "apple", "workstation"],
+    "stock": 4
+  },
+  {
+    "id": "prod_decathlon_kiprun_gps_watch",
+    "merchant_id": "techmart",
+    "name": "Kiprun 500 by Coros GPS Multi-Sport Watch",
+    "description": "Lightweight multi-sport GPS watch developed with Coros technology. Tracks heart rate, pace, cadence, interval training, and altitude with 25-hour full GPS battery life and 50m water resistance.",
+    "price": 12999.0,
+    "category": "Sports",
+    "tags": ["smartwatch", "coros", "running", "decathlon", "fitness", "gps"],
+    "stock": 15
+  },
+  {
+    "id": "prod_belkin_3in1_magsafe",
+    "merchant_id": "techmart",
+    "name": "Belkin BoostCharge Pro 3-in-1 MagSafe Wireless Charging Stand",
+    "description": "Official Apple 15W fast wireless charging stand for iPhone 15/14/13/12 series, Apple Watch Ultra/Series 9 fast charging, and dedicated wireless charging tray for AirPods.",
+    "price": 12499.0,
+    "category": "Electronics",
+    "tags": ["charger", "belkin", "magsafe", "wireless", "apple", "stand"],
+    "stock": 17
+  },
+  {
+    "id": "prod_fitbit_charge_6",
+    "merchant_id": "techmart",
+    "name": "Fitbit Charge 6 Advanced Fitness & Health Tracker",
+    "description": "Premium fitness tracker with Google apps integration (Google Maps, Google Wallet), heart rate on exercise equipment, ECG app, EDA stress sensor, built-in GPS, and 7-day battery.",
+    "price": 13999.0,
+    "category": "Sports",
+    "tags": ["fitness-tracker", "fitbit", "google", "health", "smartband", "sports"],
+    "stock": 22
+  },
+  {
+    "id": "prod_atomic_habits_clear",
+    "merchant_id": "bookhaven",
+    "name": "Atomic Habits by James Clear (Hardcover Edition)",
+    "description": "An easy and proven way to build good habits and break bad ones. The definitive guide on behavioral change, tiny changes, and remarkable compound results for personal and professional growth.",
+    "price": 699.0,
+    "category": "Books",
+    "tags": ["book", "self-help", "productivity", "bestseller", "psychology", "hardcover"],
+    "stock": 80
+  },
+  {
+    "id": "prod_psychology_of_money_housel",
+    "merchant_id": "bookhaven",
+    "name": "The Psychology of Money by Morgan Housel",
+    "description": "Timeless lessons on wealth, greed, and happiness. 19 short stories exploring the strange ways people think about money and teaching you how to make better sense of life's most important topic.",
+    "price": 349.0,
+    "category": "Books",
+    "tags": ["book", "finance", "investing", "psychology", "bestseller", "paperback"],
+    "stock": 65
+  },
+  {
+    "id": "prod_designing_data_intensive_apps",
+    "merchant_id": "bookhaven",
+    "name": "Designing Data-Intensive Applications by Martin Kleppmann",
+    "description": "The big ideas behind reliable, scalable, and maintainable systems. Essential reading for software engineers and systems architects covering data models, replication, partitioning, and stream processing.",
+    "price": 1850.0,
+    "category": "Books",
+    "tags": ["book", "tech", "software-engineering", "system-design", "database", "oreilly"],
+    "stock": 28
+  },
+  {
+    "id": "prod_clean_code_martin",
+    "merchant_id": "bookhaven",
+    "name": "Clean Code: A Handbook of Agile Software Craftsmanship by Robert C. Martin",
+    "description": "A handbook of agile software craftsmanship. Even bad code can function, but if code isn't clean, it can bring a development organization to its knees. Practical principles, patterns, and refactoring.",
+    "price": 999.0,
+    "category": "Books",
+    "tags": ["book", "programming", "software-engineering", "clean-code", "developer"],
+    "stock": 35
+  },
+  {
+    "id": "prod_deep_work_newport",
+    "merchant_id": "bookhaven",
+    "name": "Deep Work: Rules for Focused Success in a Distracted World by Cal Newport",
+    "description": "Cal Newport argues that the ability to focus without distraction on a cognitively demanding task is becoming increasingly rare and vastly valuable in today's knowledge economy.",
+    "price": 450.0,
+    "category": "Books",
+    "tags": ["book", "productivity", "focus", "career", "bestseller", "self-help"],
+    "stock": 42
+  },
+  {
+    "id": "prod_sapiens_harari",
+    "merchant_id": "bookhaven",
+    "name": "Sapiens: A Brief History of Humankind by Yuval Noah Harari",
+    "description": "100,000 years ago, at least six human species inhabited the earth. Today there is just one: Homo sapiens. How did our species succeed in the battle for dominance? An international phenomenon.",
+    "price": 520.0,
+    "category": "Books",
+    "tags": ["book", "history", "anthropology", "science", "bestseller", "philosophy"],
+    "stock": 55
+  },
+  {
+    "id": "prod_dune_frank_herbert",
+    "merchant_id": "bookhaven",
+    "name": "Dune: Deluxe Collector's Edition by Frank Herbert",
+    "description": "Frank Herbert's masterwork - the epic tale of triumph and betrayal on the desert planet of Arrakis. Deluxe hardcover edition with embossed cover, custom endpapers, and full-color planetary map.",
+    "price": 1499.0,
+    "category": "Books",
+    "tags": ["book", "sci-fi", "fiction", "classics", "hardcover", "collector"],
+    "stock": 19
+  },
+  {
+    "id": "prod_grokking_algorithms_bhargava",
+    "merchant_id": "bookhaven",
+    "name": "Grokking Algorithms: An Illustrated Guide by Aditya Bhargava",
+    "description": "A friendly and illustrated guide that teaches you how to apply common algorithms to practical problems in software development with over 400 illustrations and intuitive visual breakdowns.",
+    "price": 1150.0,
+    "category": "Books",
+    "tags": ["book", "algorithms", "programming", "illustrated", "cs-fundamentals"],
+    "stock": 0
+  },
+  {
+    "id": "prod_zero_to_one_thiel",
+    "merchant_id": "bookhaven",
+    "name": "Zero to One: Notes on Startups, or How to Build the Future by Peter Thiel",
+    "description": "Legendary entrepreneur and investor Peter Thiel shows how we can find singular ways to create new things and build monopolistic startups that bring humanity from 0 to 1.",
+    "price": 499.0,
+    "category": "Books",
+    "tags": ["book", "startups", "business", "entrepreneurship", "innovation", "venture-capital"],
+    "stock": 38
+  },
+  {
+    "id": "prod_steve_jobs_isaacson",
+    "merchant_id": "bookhaven",
+    "name": "Steve Jobs: The Exclusive Biography by Walter Isaacson",
+    "description": "Based on more than forty interviews with Jobs conducted over two years, Isaacson's acclaimed biography explores the rollercoaster life and searingly intense personality of a creative entrepreneur.",
+    "price": 799.0,
+    "category": "Books",
+    "tags": ["book", "biography", "apple", "steve-jobs", "business", "technology"],
+    "stock": 21
+  },
+  {
+    "id": "prod_moleskine_classic_notebook",
+    "merchant_id": "bookhaven",
+    "name": "Moleskine Classic Hardcover Dotted Journal (Large, Black)",
+    "description": "Classic large dotted notebook featuring ivory acid-free paper, ribbon bookmark, expandable inner pocket, and elastic closure band. The trusted companion of thinkers and creators worldwide.",
+    "price": 1895.0,
+    "category": "Books",
+    "tags": ["notebook", "stationery", "journal", "moleskine", "accessories", "dotted"],
+    "stock": 30
+  },
+  {
+    "id": "prod_parker_jotter_fountain_pen",
+    "merchant_id": "bookhaven",
+    "name": "Parker Jotter Stainless Steel Fountain Pen (Medium Nib)",
+    "description": "Iconic Parker Jotter design in stainless steel with high-shine trims and signature arrowhead clip. Equipped with a stainless steel feather-shaped nib for a smooth, refined writing experience.",
+    "price": 899.0,
+    "category": "Books",
+    "tags": ["pen", "stationery", "fountain-pen", "parker", "accessories", "writing"],
+    "stock": 27
+  },
+  {
+    "id": "prod_pragmatic_programmer_thomas",
+    "merchant_id": "bookhaven",
+    "name": "The Pragmatic Programmer: 20th Anniversary Edition by David Thomas & Andrew Hunt",
+    "description": "One of the most significant books in modern software engineering. Illustrates best practices and major pitfalls of software development across architecture, code craftsmanship, and career growth.",
+    "price": 2199.0,
+    "category": "Books",
+    "tags": ["book", "programming", "software-engineering", "career", "agile", "best-practices"],
+    "stock": 16
+  },
+  {
+    "id": "prod_three_body_problem_liu",
+    "merchant_id": "bookhaven",
+    "name": "The Three-Body Problem Trilogy Boxset by Cixin Liu",
+    "description": "The complete Hugo Award-winning hard sci-fi trilogy featuring The Three-Body Problem, The Dark Forest, and Death's End in a collectible slipcased paperback edition.",
+    "price": 1999.0,
+    "category": "Books",
+    "tags": ["book", "sci-fi", "trilogy", "boxset", "fiction", "hugo-award"],
+    "stock": 12
+  },
+  {
+    "id": "prod_kindle_leather_cover",
+    "merchant_id": "bookhaven",
+    "name": "BookHaven Premium Leather Folio Case for Kindle Paperwhite",
+    "description": "Handcrafted vintage genuine leather protective case with auto sleep/wake magnetic closure and soft microfiber lining designed specifically for Kindle Paperwhite 6.8-inch.",
+    "price": 1299.0,
+    "category": "Books",
+    "tags": ["case", "kindle", "leather", "accessories", "ereader", "cover"],
+    "stock": 25
+  },
+  {
+    "id": "prod_thinking_fast_and_slow_kahneman",
+    "merchant_id": "bookhaven",
+    "name": "Thinking, Fast and Slow by Daniel Kahneman",
+    "description": "Nobel laureate Daniel Kahneman's seminal work explaining the two systems that drive the way we think: System 1 (fast, intuitive, emotional) and System 2 (slower, more deliberative, logical).",
+    "price": 599.0,
+    "category": "Books",
+    "tags": ["book", "psychology", "behavioral-economics", "decision-making", "bestseller"],
+    "stock": 45
+  }
+]

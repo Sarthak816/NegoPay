@@ -1,2 +1,8 @@
 docs/
 razorpay_buildathon_brainstorm.md
+
+negopay.db
+.env
+backend/__pycache__/
+frontend/node_modules/
+frontend/.next/
