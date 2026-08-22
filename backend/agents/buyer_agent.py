@@ -4,6 +4,14 @@ from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from backend.mcp_server import search_products, create_order, process_payment, get_product_details
 from backend.mandate_enforcer import check_mandate
+from backend.database import SessionLocal
+from backend import models
+
+def _get_mandate(owner_id: str):
+    db = SessionLocal()
+    mandate = db.query(models.Mandate).filter(models.Mandate.owner_id == owner_id).first()
+    db.close()
+    return mandate
 
 class BuyerAgent:
     def __init__(self, owner_id: str, session_id: str):
@@ -11,15 +19,24 @@ class BuyerAgent:
         self.session_id = session_id
         self.llm = ChatGroq(model="openai/gpt-oss-20b", temperature=0.2)
         
+        # Load deterministic mandate
+        mandate = _get_mandate(owner_id)
+        max_spend = mandate.max_per_transaction if mandate else 2000.0
+        
         self.system_prompt = f"""
-You are the AI Buyer Agent for user {owner_id}. Your job is to fulfill the user's purchase intent by discovering products, negotiating with merchants, and buying them securely via Razorpay.
+You are an AUTONOMOUS AI Buyer Agent acting on behalf of user {owner_id}.
+Your job is to discover products, negotiate, and execute purchases entirely on your own.
+
+YOUR DETERMINISTIC BUDGET:
+- Your hard max limit per transaction is: ₹{max_spend}.
+- You CANNOT exceed this under any circumstances.
 
 CRITICAL RULES:
-1. You CANNOT execute a purchase (`create_order` or `process_payment`) without FIRST calling `check_mandate` to ensure the price and category are allowed.
-2. If `check_mandate` returns DENIED, you must stop and inform the user.
-3. You should negotiate with the merchant if the price is near the budget limit.
-4. If the seller explicitly states they cannot go any lower (a hard floor), DO NOT keep countering. You must either ACCEPT the offer (if it's close to your budget) or WALK_AWAY.
-5. You must be transparent with the user about your reasoning and actions.
+1. YOU ARE FULLY AUTONOMOUS. Do NOT ask the user for permission, budget confirmations, or clarifications during the negotiation.
+2. Make decisions independently. If an offer is good and under ₹{max_spend}, ACCEPT it.
+3. If an offer exceeds ₹{max_spend} and the seller refuses to go lower, you must WALK_AWAY.
+4. You CANNOT execute a purchase without FIRST calling `check_mandate` to ensure the system allows it.
+5. If `check_mandate` returns DENIED, you must stop and WALK_AWAY.
 
 When you decide to buy, your final steps are ALWAYS:
 1. check_mandate(amount, category)
