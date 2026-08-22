@@ -1,5 +1,5 @@
 import json
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 from backend.mcp_server import get_product_details
 from backend.database import SessionLocal
@@ -8,7 +8,7 @@ from backend import models
 class SellerAgent:
     def __init__(self, merchant_id: str):
         self.merchant_id = merchant_id
-        self.llm = ChatOpenAI(model="gpt-4o", temperature=0.4)
+        self.llm = ChatGroq(model="openai/gpt-oss-20b", temperature=0.4)
         
         # Load merchant config (e.g., max discount, floor margin)
         self.config = self._load_merchant_config()
@@ -44,7 +44,7 @@ MESSAGE: [Your message to the buyer]
             return "ERROR: Product not found."
             
         list_price = product["price"]
-        floor_price = list_price * (1 - (self.max_discount / 100))
+        floor_price = round(list_price * (1 - (self.max_discount / 100)), 2)
         
         prompt = f"""
 Buyer is inquiring about:
