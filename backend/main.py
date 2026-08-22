@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
+from typing import Optional
 
 from . import models, database
 from .mcp_server import search_products, get_product_details
@@ -29,8 +30,8 @@ app.add_middleware(
 # --- Pydantic Models ---
 class SearchRequest(BaseModel):
     query: str = ""
-    max_price: float = None
-    category: str = None
+    max_price: Optional[float] = None
+    category: Optional[str] = None
 
 class NegotiateRequest(BaseModel):
     owner_id: str
