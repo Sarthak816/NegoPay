@@ -111,16 +111,16 @@ export default function Home() {
 
           {/* Negotiation Panel */}
           <div className="bg-white border rounded-xl shadow-sm p-6 flex flex-col h-[600px]">
-            <h2 className="text-xl font-semibold border-b pb-2 mb-4">Agent Negotiation</h2>
+            <h2 className="text-xl font-semibold border-b pb-2 mb-4 shrink-0">Agent Negotiation</h2>
             
             {!selectedProduct ? (
               <div className="flex-1 flex items-center justify-center text-gray-400">
                 Select a product to start your AI buyer agent.
               </div>
             ) : (
-              <div className="flex flex-col h-full">
+              <div className="flex-1 flex flex-col min-h-0">
                 {/* Product target info */}
-                <div className="bg-blue-50 text-blue-800 p-3 rounded-lg text-sm mb-4">
+                <div className="bg-blue-50 text-blue-800 p-3 rounded-lg text-sm mb-4 shrink-0">
                   <strong>Target:</strong> {selectedProduct.name} (List: ₹{selectedProduct.price})
                 </div>
 
@@ -146,7 +146,7 @@ export default function Home() {
                   
                   {/* Final Status */}
                   {negotiationResult && (
-                    <div className={`mt-4 p-4 rounded-lg text-center font-bold border ${negotiationResult.status === 'ACCEPTED' ? 'bg-green-100 text-green-800 border-green-300' : 'bg-red-100 text-red-800 border-red-300'}`}>
+                    <div className={`mt-4 p-4 rounded-lg text-center font-bold border shrink-0 ${negotiationResult.status === 'ACCEPTED' ? 'bg-green-100 text-green-800 border-green-300' : 'bg-red-100 text-red-800 border-red-300'}`}>
                       RESULT: {negotiationResult.status}
                       {negotiationResult.final_price && <div>Final Price: ₹{negotiationResult.final_price}</div>}
                       {negotiationResult.purchase_result && (
@@ -160,10 +160,10 @@ export default function Home() {
                 </div>
 
                 {/* Control Panel */}
-                <div className="flex gap-2 mt-auto">
+                <div className="flex gap-2 shrink-0">
                   <input
                     type="text"
-                    className="flex-1 p-2 border rounded-lg text-sm"
+                    className="flex-1 p-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="E.g., I won't pay more than ₹1000..."
                     value={budgetMessage}
                     onChange={(e) => setBudgetMessage(e.target.value)}
@@ -172,7 +172,7 @@ export default function Home() {
                   <button
                     onClick={startNegotiation}
                     disabled={negotiating}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 font-medium"
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 font-medium whitespace-nowrap"
                   >
                     Deploy Agent
                   </button>
