@@ -107,22 +107,34 @@ MESSAGE: [Your message to the merchant]
         self.history.append(response)
         return response.content
 
-    def execute_purchase(self, product_id: str, final_price: float, category: str = "Electronics"):
+    def execute_purchase(self, product_id: str, final_price: float, audit_trail: list, category: str = "Electronics"):
         """Executes the actual purchase flow after negotiation succeeds."""
         # 1. Mandate Check
+        audit_trail.append({"type": "SYSTEM", "detail": f"[Mandate Check] Evaluating {final_price} against limits."})
         mandate_result = check_mandate(self.owner_id, final_price, category)
         if mandate_result["decision"] != "APPROVED":
+            audit_trail.append({"type": "FAILURE", "detail": f"[Mandate Rejected] {mandate_result['reason']}"})
             return {"status": "failed", "reason": mandate_result["reason"]}
             
+        audit_trail.append({"type": "SUCCESS", "detail": "[Mandate Approved] Limits verified."})
+        
         # 2. Create Order
+        audit_trail.append({"type": "API_CALL", "detail": f"[Razorpay API] Calling create_order({product_id}, qty=1)"})
         order_result = create_order(product_id, 1, self.session_id)
         if "error" in order_result:
+            audit_trail.append({"type": "FAILURE", "detail": f"[Razorpay API Error] {order_result['error']}"})
             return {"status": "failed", "reason": order_result["error"]}
             
+        audit_trail.append({"type": "SUCCESS", "detail": f"[Razorpay API] Order Created: {order_result['order_id']}"})
+            
         # 3. Process Payment
+        audit_trail.append({"type": "API_CALL", "detail": f"[Razorpay API] Processing payment for {order_result['order_id']}"})
         pay_result = process_payment(order_result["order_id"])
         if "error" in pay_result:
+            audit_trail.append({"type": "FAILURE", "detail": f"[Razorpay API Error] {pay_result['error']}"})
             return {"status": "failed", "reason": pay_result["error"]}
+            
+        audit_trail.append({"type": "SUCCESS", "detail": f"[Razorpay API] Payment Captured: {pay_result.get('payment_id', 'mocked')}"})
             
         return {
             "status": "success", 

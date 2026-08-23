@@ -12,6 +12,7 @@ class NegotiationManager:
         self.product_id = product_id
         self.max_rounds = 5
         self.transcript = []
+        self.audit_trail = []
         
         # Init DB Session
         self.db = SessionLocal()
@@ -26,6 +27,7 @@ class NegotiationManager:
         self.db.commit()
 
     def start_negotiation(self, initial_buyer_message: str):
+        self.audit_trail.append({"type": "SYSTEM", "detail": f"[MCP Call] Discovery phase initiated. Target: {self.product_id}"})
         self.transcript.append({"sender": "BUYER", "message": initial_buyer_message})
         print(f"\n[Round 1] BUYER: {initial_buyer_message}")
         
@@ -38,6 +40,7 @@ class NegotiationManager:
         
     def _loop(self, last_seller_response, round_num: int):
         while round_num <= self.max_rounds:
+            self.audit_trail.append({"type": "AGENT", "detail": f"Negotiation Round {round_num}/{self.max_rounds} completed."})
             print(f"[Round {round_num}] SELLER ({last_seller_response['action']} - ₹{last_seller_response['price']}): {last_seller_response['message']}")
             self.transcript.append({
                 "sender": "SELLER", 
@@ -47,8 +50,9 @@ class NegotiationManager:
             })
             
             if last_seller_response["action"] == "DEADLOCK":
+                self.audit_trail.append({"type": "FAILURE", "detail": "[System] Seller invoked DEADLOCK. Terminating."})
                 self._close_session("DEADLOCK")
-                return {"status": "DEADLOCK", "transcript": self.transcript}
+                return {"status": "DEADLOCK", "transcript": self.transcript, "audit_trail": self.audit_trail}
                 
             # Buyer's turn to evaluate
             buyer_raw = self.buyer.evaluate_offer(self.product_id, last_seller_response["price"], last_seller_response["message"])
@@ -58,22 +62,25 @@ class NegotiationManager:
             self.transcript.append({"sender": "BUYER", "action": buyer_action, "message": buyer_msg})
             
             if buyer_action == "ACCEPT":
-                print(f"\n✅ DEAL REACHED at ₹{last_seller_response['price']}!")
+                self.audit_trail.append({"type": "SUCCESS", "detail": f"[System] Buyer accepted offer at ₹{last_seller_response['price']}."})
+                print(f"\n DEAL REACHED at ₹{last_seller_response['price']}!")
                 self._close_session("ACCEPTED", final_price=last_seller_response["price"])
                 
                 # Execute purchase
-                purchase_result = self.buyer.execute_purchase(self.product_id, last_seller_response["price"])
+                purchase_result = self.buyer.execute_purchase(self.product_id, last_seller_response["price"], self.audit_trail)
                 return {
                     "status": "ACCEPTED",
                     "final_price": last_seller_response["price"],
                     "purchase_result": purchase_result,
-                    "transcript": self.transcript
+                    "transcript": self.transcript,
+                    "audit_trail": self.audit_trail
                 }
                 
             if buyer_action == "WALK_AWAY":
-                print(f"\n🚶 BUYER WALKED AWAY.")
+                self.audit_trail.append({"type": "SYSTEM", "detail": "[System] Buyer invoked WALK_AWAY. Deal collapsed."})
+                print(f"\n BUYER WALKED AWAY.")
                 self._close_session("REJECTED")
-                return {"status": "WALK_AWAY", "transcript": self.transcript}
+                return {"status": "WALK_AWAY", "transcript": self.transcript, "audit_trail": self.audit_trail}
                 
             # Seller's turn to respond to counter
             round_num += 1
@@ -83,9 +90,10 @@ class NegotiationManager:
             last_seller_response = self.seller.receive_inquiry(self.product_id, buyer_msg)
             time.sleep(1) # Small pause for log readability
             
-        print("\n⚠️ MAX ROUNDS REACHED. DEADLOCK.")
+        self.audit_trail.append({"type": "FAILURE", "detail": "[System] Max negotiation rounds reached. DEADLOCK enforced."})
+        print("\n MAX ROUNDS REACHED. DEADLOCK.")
         self._close_session("DEADLOCK")
-        return {"status": "DEADLOCK", "transcript": self.transcript}
+        return {"status": "DEADLOCK", "transcript": self.transcript, "audit_trail": self.audit_trail}
 
     def _parse_buyer_response(self, content: str):
         lines = content.strip().split('\n')

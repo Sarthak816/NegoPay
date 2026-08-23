@@ -84,7 +84,7 @@ export default function Home() {
         </div>
 
         {/* Main Content Area */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Products List */}
           <div className="space-y-4">
@@ -179,6 +179,25 @@ export default function Home() {
                 </div>
               </div>
             )}
+          </div>
+          
+          {/* Audit Trail / Mission Control */}
+          <div className="bg-gray-900 border-gray-800 border rounded-xl shadow-sm p-6 flex flex-col h-[600px] font-mono text-green-400">
+            <h2 className="text-xl font-semibold border-b border-gray-700 pb-2 mb-4 text-white">Mission Control (Audit Log)</h2>
+            <div className="flex-1 overflow-y-auto space-y-2 text-sm">
+              {!negotiationResult && !negotiating && (
+                <p className="text-gray-500">Waiting for agent deployment...</p>
+              )}
+              {negotiating && (
+                <p className="animate-pulse text-blue-400">[SYSTEM] Agent negotiation protocol initiated...</p>
+              )}
+              {negotiationResult?.audit_trail?.map((log: any, i: number) => (
+                <div key={i} className={`p-2 rounded border border-gray-800 ${log.type === 'FAILURE' ? 'bg-red-900/20 text-red-400' : log.type === 'SUCCESS' ? 'bg-green-900/20 text-green-400' : 'bg-gray-800/50'}`}>
+                  <span className="opacity-50 text-xs mr-2">[{new Date().toLocaleTimeString()}]</span>
+                  {log.detail}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
