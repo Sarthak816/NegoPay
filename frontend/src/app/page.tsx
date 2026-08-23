@@ -137,7 +137,7 @@ export default function Home() {
                   {negotiationResult?.transcript?.map((turn: any, i: number) => (
                     <div key={i} className={`flex flex-col ${turn.sender === 'BUYER' ? 'items-end' : 'items-start'}`}>
                       <span className="text-xs font-bold text-gray-500 mb-1">{turn.sender === 'BUYER' ? 'Your Buyer Agent' : 'Merchant Agent'}</span>
-                      <div className={`max-w-[80%] p-3 rounded-2xl ${turn.sender === 'BUYER' ? 'bg-blue-600 text-white rounded-tr-none' : 'bg-gray-200 text-gray-800 rounded-tl-none'}`}>
+                      <div className={`max-w-[80%] p-3 rounded-2xl break-words whitespace-pre-wrap ${turn.sender === 'BUYER' ? 'bg-blue-600 text-white rounded-tr-none' : 'bg-gray-200 text-gray-800 rounded-tl-none'}`}>
                         {turn.action && <div className="text-xs font-bold opacity-70 mb-1">[{turn.action}] {turn.price ? `₹${turn.price}` : ''}</div>}
                         {turn.message}
                       </div>
@@ -150,7 +150,7 @@ export default function Home() {
                       RESULT: {negotiationResult.status}
                       {negotiationResult.final_price && <div>Final Price: ₹{negotiationResult.final_price}</div>}
                       {negotiationResult.purchase_result && (
-                        <div className="mt-2 text-sm bg-white/50 p-2 rounded text-left">
+                        <div className="mt-2 text-sm bg-white/50 p-2 rounded text-left break-words">
                           <p><strong>Razorpay Order:</strong> {negotiationResult.purchase_result.order_id}</p>
                           <p><strong>Payment Status:</strong> {negotiationResult.purchase_result.status}</p>
                         </div>
@@ -160,10 +160,10 @@ export default function Home() {
                 </div>
 
                 {/* Control Panel */}
-                <div className="flex gap-2 shrink-0">
+                <div className="flex gap-2 shrink-0 mt-auto w-full">
                   <input
                     type="text"
-                    className="flex-1 p-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 min-w-0 p-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="E.g., I won't pay more than ₹1000..."
                     value={budgetMessage}
                     onChange={(e) => setBudgetMessage(e.target.value)}
