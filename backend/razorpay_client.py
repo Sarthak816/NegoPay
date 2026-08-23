@@ -3,6 +3,7 @@ import os
 import hmac
 import hashlib
 from dotenv import load_dotenv
+from tenacity import retry, stop_after_attempt, wait_fixed
 
 load_dotenv()
 
@@ -16,6 +17,7 @@ else:
     client = None
     print("WARNING: Razorpay API keys not found in environment. Payment features will not work.")
 
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 def create_order(amount_inr: float, currency: str = "INR", receipt: str = None, notes: dict = None):
     if not client:
         raise ValueError("Razorpay client not configured.")
