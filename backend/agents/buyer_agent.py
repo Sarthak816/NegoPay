@@ -119,17 +119,17 @@ MESSAGE: [Your message to the merchant]
         audit_trail.append({"type": "SUCCESS", "detail": "[Mandate Approved] Limits verified."})
         
         # 2. Create Order
-        audit_trail.append({"type": "API_CALL", "detail": f"[Razorpay API] Calling create_order({product_id}, qty=1)"})
-        order_result = create_order(product_id, 1, self.session_id)
+        audit_trail.append({"type": "API_CALL", "detail": f"[Razorpay API] Calling create_order({product_id}, qty=1, price={final_price})"})
+        order_result = create_order(product_id, 1, self.session_id, agreed_price=final_price)
         if "error" in order_result:
             audit_trail.append({"type": "FAILURE", "detail": f"[Razorpay API Error] {order_result['error']}"})
             return {"status": "failed", "reason": order_result["error"]}
             
-        audit_trail.append({"type": "SUCCESS", "detail": f"[Razorpay API] Order Created: {order_result['order_id']}"})
+        audit_trail.append({"type": "SUCCESS", "detail": f"[Razorpay API] Order Created: {order_result['razorpay_order_id']}"})
             
         # 3. Process Payment
-        audit_trail.append({"type": "API_CALL", "detail": f"[Razorpay API] Processing payment for {order_result['order_id']}"})
-        pay_result = process_payment(order_result["order_id"])
+        audit_trail.append({"type": "API_CALL", "detail": f"[Razorpay API] Processing payment for {order_result['razorpay_order_id']}"})
+        pay_result = process_payment(order_result["order_id"]) # Uses internal ID for mock process_payment
         if "error" in pay_result:
             audit_trail.append({"type": "FAILURE", "detail": f"[Razorpay API Error] {pay_result['error']}"})
             return {"status": "failed", "reason": pay_result["error"]}
@@ -138,7 +138,7 @@ MESSAGE: [Your message to the merchant]
             
         return {
             "status": "success", 
-            "order_id": order_result["order_id"],
+            "order_id": order_result["razorpay_order_id"],
             "amount": final_price,
             "receipt": "Payment captured successfully on Razorpay."
         }

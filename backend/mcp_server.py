@@ -63,7 +63,7 @@ def check_inventory(product_id: str, quantity: int) -> Dict[str, Any]:
         "is_sufficient": available
     }
 
-def create_order(product_id: str, quantity: int, session_id: str) -> Dict[str, Any]:
+def create_order(product_id: str, quantity: int, session_id: str, agreed_price: float = None) -> Dict[str, Any]:
     """Creates an order on Razorpay and stores it in the database."""
     db = next(_get_db())
     
@@ -82,7 +82,8 @@ def create_order(product_id: str, quantity: int, session_id: str) -> Dict[str, A
     if existing:
         return {"order_id": existing.id, "razorpay_order_id": existing.razorpay_order_id, "amount": existing.amount, "status": existing.status}
         
-    total_amount = product.price * quantity
+    unit_price = agreed_price if agreed_price is not None else product.price
+    total_amount = unit_price * quantity
     db_order_id = f"ord_internal_{uuid.uuid4().hex[:8]}"
     
     # 3. Create Razorpay Order
