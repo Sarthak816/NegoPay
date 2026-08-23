@@ -126,6 +126,9 @@ def process_payment(order_id: str) -> Dict[str, Any]:
     Simulates successful payment capture for test mode. 
     In real flow, frontend sends token. Here we simulate success.
     """
+    import random
+    import string
+    
     db = next(_get_db())
     order = db.query(models.Order).filter(models.Order.id == order_id).first()
     if not order:
@@ -134,7 +137,9 @@ def process_payment(order_id: str) -> Dict[str, Any]:
     if order.status == "PAID":
         return {"status": "already_paid", "order_id": order_id}
         
-    payment_id = f"pay_mock_{uuid.uuid4().hex[:8]}"
+    # Generate a realistic looking Razorpay Payment ID for the UI
+    chars = string.ascii_letters + string.digits
+    payment_id = "pay_" + "".join(random.choice(chars) for _ in range(14))
     
     payment = models.Payment(
         id=payment_id,
