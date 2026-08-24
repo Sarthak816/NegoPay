@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function Home() {
   const [query, setQuery] = useState('');
@@ -12,7 +12,35 @@ export default function Home() {
   const [budgetMessage, setBudgetMessage] = useState('');
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
   
+  const [mandate, setMandate] = useState<any>(null);
+  const [showSettings, setShowSettings] = useState(false);
+  
   const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/mandate/user_123')
+      .then(res => res.json())
+      .then(data => setMandate(data))
+      .catch(err => console.error("Failed to load mandate", err));
+  }, []);
+
+  const saveMandate = async () => {
+    try {
+      await fetch('http://localhost:8000/api/mandate/user_123', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          max_per_transaction: mandate.max_per_transaction,
+          require_approval_above: mandate.require_approval_above
+        })
+      });
+      alert('Mandate Updated Successfully!');
+      setShowSettings(false);
+    } catch (e) {
+      console.error(e);
+      alert('Failed to update mandate');
+    }
+  };
 
   const searchProducts = async () => {
     setLoading(true);
@@ -104,11 +132,68 @@ export default function Home() {
             <h1 className="text-4xl font-bold tracking-tight text-blue-600">NegoPay</h1>
             <p className="text-gray-500 mt-1">Agent-to-Agent Commerce via Razorpay</p>
           </div>
-          <div className="bg-white p-3 rounded-lg shadow-sm border text-sm">
-            <span className="font-semibold">User:</span> user_123 <br/>
-            <span className="font-semibold text-green-600">Mandate:</span> Active (Max ₹2000)
+          <div className="bg-white p-3 rounded-lg shadow-sm border text-sm flex items-center gap-4">
+            <div>
+              <span className="font-semibold">User:</span> user_123 <br/>
+              <span className="font-semibold text-green-600">Mandate:</span> Active (Max ₹{mandate?.max_per_transaction || 2000})
+            </div>
+            <button 
+              onClick={() => setShowSettings(!showSettings)}
+              className="px-3 py-1 bg-gray-100 hover:bg-gray-200 border rounded text-xs font-semibold transition"
+            >
+              ⚙️ Settings
+            </button>
           </div>
         </div>
+
+        {/* Mandate Control Panel */}
+        {showSettings && mandate && (
+          <div className="bg-white p-6 rounded-xl shadow-md border border-blue-100 space-y-4">
+            <h3 className="font-bold text-lg text-blue-800 border-b pb-2">Mandate Control Panel</h3>
+            <p className="text-sm text-gray-600">Adjust the deterministic rules that govern your AI Buyer Agent.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold flex justify-between">
+                  <span>Max Budget per Transaction</span>
+                  <span className="text-blue-600">₹{mandate.max_per_transaction}</span>
+                </label>
+                <input 
+                  type="range" 
+                  min="500" max="10000" step="100" 
+                  value={mandate.max_per_transaction}
+                  onChange={(e) => setMandate({...mandate, max_per_transaction: Number(e.target.value)})}
+                  className="w-full accent-blue-600"
+                />
+                <p className="text-xs text-gray-500">The absolute maximum the AI can spend. It will walk away if prices exceed this.</p>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold flex justify-between">
+                  <span>Auto-Approval Threshold</span>
+                  <span className="text-green-600">₹{mandate.require_approval_above}</span>
+                </label>
+                <input 
+                  type="range" 
+                  min="100" max={mandate.max_per_transaction} step="100" 
+                  value={mandate.require_approval_above}
+                  onChange={(e) => setMandate({...mandate, require_approval_above: Number(e.target.value)})}
+                  className="w-full accent-green-600"
+                />
+                <p className="text-xs text-gray-500">Deals above this price will be safely paused for human review before payment.</p>
+              </div>
+            </div>
+            
+            <div className="flex justify-end pt-2">
+              <button 
+                onClick={saveMandate}
+                className="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition"
+              >
+                Save AI Rules
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Search Bar */}
         <div className="flex gap-2">
