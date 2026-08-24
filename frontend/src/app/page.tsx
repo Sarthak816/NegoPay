@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 export default function Home() {
   const [query, setQuery] = useState('');
@@ -10,6 +10,8 @@ export default function Home() {
   const [negotiationResult, setNegotiationResult] = useState<any>(null);
   const [negotiating, setNegotiating] = useState(false);
   const [budgetMessage, setBudgetMessage] = useState('');
+  
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const searchProducts = async () => {
     setLoading(true);
@@ -21,6 +23,12 @@ export default function Home() {
       });
       const data = await res.json();
       setProducts(data.results || []);
+      
+      // Auto-scroll to the 3-column mockups smoothly after searching
+      setTimeout(() => {
+        gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+      
     } catch (e) {
       console.error(e);
     }
@@ -84,7 +92,7 @@ export default function Home() {
         </div>
 
         {/* Main Content Area */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div ref={gridRef} className="grid grid-cols-1 lg:grid-cols-3 gap-8 scroll-mt-8">
           
           {/* Products List */}
           <div className="space-y-4">
