@@ -38,6 +38,11 @@ export default function Home() {
   const handlePayment = () => {
     if (!negotiationResult?.purchase_result?.order_id) return;
     
+    if (!(window as any).Razorpay) {
+        alert("Razorpay SDK failed to load. Please check your connection or refresh the page.");
+        return;
+    }
+
     const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_TSiPLxrVngFkoT",
         amount: Math.round(negotiationResult.final_price * 100),
