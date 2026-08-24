@@ -41,16 +41,27 @@ MESSAGE: [Your message to the buyer]
     def receive_inquiry(self, product_id: str, buyer_message: str):
         product = get_product_details(product_id)
         if "error" in product:
-            return "ERROR: Product not found."
+            return {"action": "DEADLOCK", "price": 0.0, "message": "ERROR: Product not found.", "raw": ""}
             
         list_price = product["price"]
+        stock = product["stock"]
         floor_price = round(list_price * (1 - (self.max_discount / 100)), 2)
+        
+        # DETERMINISTIC INVENTORY GUARD
+        if stock <= 0:
+            return {
+                "action": "DEADLOCK",
+                "price": list_price,
+                "message": f"I apologize, but the {product['name']} is currently completely out of stock. I cannot accept any offers or proceed with this sale.",
+                "raw": "ACTION: DEADLOCK\nMESSAGE: Out of stock."
+            }
         
         prompt = f"""
 Buyer is inquiring about:
 Product: {product['name']}
 List Price: ₹{list_price}
 Absolute Minimum Allowed Price (Floor): ₹{floor_price}
+Current Stock: {stock} units
 
 Buyer Message: "{buyer_message}"
 
