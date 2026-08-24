@@ -86,14 +86,20 @@ When you decide to buy, your final steps are ALWAYS:
 
     def evaluate_offer(self, product_id: str, offer_price: float, merchant_message: str):
         """Called during negotiation when the seller agent makes an offer."""
+        product = get_product_details(product_id)
+        list_price = product.get("price", 0) if "error" not in product else "UNKNOWN"
+        
         prompt = f"""
 The merchant has made an offer:
 Product ID: {product_id}
+List Price: ₹{list_price}
 Offered Price: ₹{offer_price}
 Merchant Message: "{merchant_message}"
 
+CRITICAL RULE: You are negotiating on behalf of the user. The product's listed price is ₹{list_price}. You must NEVER offer more than the listed price. Your goal is to negotiate a discount or a bundle deal below the listed price. If you offer more than the listed price, you are failing your user.
+
 Respond with your next action. You can either:
-1. Accept the offer (if it fits the user's budget and is a good deal).
+1. Accept the offer (if it fits the user's budget, is below or equal to list price, and is a good deal).
 2. Counter-offer (ask for a lower price or bundle).
 3. Walk away (if it's too expensive).
 
