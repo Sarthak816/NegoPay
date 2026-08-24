@@ -146,13 +146,29 @@ export default function Home() {
                   
                   {/* Final Status */}
                   {negotiationResult && (
-                    <div className={`mt-4 p-4 rounded-lg text-center font-bold border shrink-0 ${negotiationResult.status === 'ACCEPTED' ? 'bg-green-100 text-green-800 border-green-300' : 'bg-red-100 text-red-800 border-red-300'}`}>
-                      RESULT: {negotiationResult.status}
-                      {negotiationResult.final_price && <div>Final Price: ₹{negotiationResult.final_price}</div>}
-                      {negotiationResult.purchase_result && (
+                    <div className={`mt-4 p-4 rounded-lg text-center font-bold border shrink-0 
+                      ${negotiationResult.status === 'ACCEPTED' ? 'bg-green-100 text-green-800 border-green-300' : 
+                        negotiationResult.status === 'REQUIRES_APPROVAL' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' : 
+                        'bg-red-100 text-red-800 border-red-300'}`}>
+                      
+                      {negotiationResult.status === 'REQUIRES_APPROVAL' 
+                        ? `SYSTEM PENDING: Human approval required for ₹${negotiationResult.final_price}` 
+                        : `RESULT: ${negotiationResult.status}`}
+
+                      {negotiationResult.status === 'ACCEPTED' && negotiationResult.final_price && (
+                        <div>Final Price: ₹{negotiationResult.final_price}</div>
+                      )}
+                      
+                      {negotiationResult.purchase_result && negotiationResult.purchase_result.status === 'success' && (
                         <div className="mt-2 text-sm bg-white/50 p-2 rounded text-left break-words">
                           <p><strong>Razorpay Order:</strong> {negotiationResult.purchase_result.order_id}</p>
                           <p><strong>Payment Status:</strong> {negotiationResult.purchase_result.status}</p>
+                        </div>
+                      )}
+
+                      {negotiationResult.purchase_result && negotiationResult.purchase_result.status !== 'success' && (
+                        <div className="mt-2 text-sm bg-white/50 p-2 rounded text-left break-words text-red-700">
+                          <p><strong>Blocked Reason:</strong> {negotiationResult.purchase_result.reason}</p>
                         </div>
                       )}
                     </div>

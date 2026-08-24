@@ -112,6 +112,11 @@ MESSAGE: [Your message to the merchant]
         # 1. Mandate Check
         audit_trail.append({"type": "SYSTEM", "detail": f"[Mandate Check] Evaluating {final_price} against limits."})
         mandate_result = check_mandate(self.owner_id, final_price, category)
+        
+        if mandate_result["decision"] == "REQUIRES_APPROVAL":
+            audit_trail.append({"type": "FAILURE", "detail": f"[Mandate Blocked] {mandate_result['reason']}"})
+            return {"status": "requires_approval", "reason": mandate_result["reason"]}
+            
         if mandate_result["decision"] != "APPROVED":
             audit_trail.append({"type": "FAILURE", "detail": f"[Mandate Rejected] {mandate_result['reason']}"})
             return {"status": "failed", "reason": mandate_result["reason"]}

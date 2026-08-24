@@ -64,12 +64,20 @@ class NegotiationManager:
             if buyer_action == "ACCEPT":
                 self.audit_trail.append({"type": "SUCCESS", "detail": f"[System] Buyer accepted offer at ₹{last_seller_response['price']}."})
                 print(f"\n DEAL REACHED at ₹{last_seller_response['price']}!")
-                self._close_session("ACCEPTED", final_price=last_seller_response["price"])
                 
                 # Execute purchase
                 purchase_result = self.buyer.execute_purchase(self.product_id, last_seller_response["price"], self.audit_trail)
+                
+                status_string = "ACCEPTED"
+                if purchase_result.get("status") == "requires_approval":
+                    status_string = "REQUIRES_APPROVAL"
+                elif purchase_result.get("status") == "failed":
+                    status_string = "FAILED"
+                    
+                self._close_session(status_string, final_price=last_seller_response["price"])
+                
                 return {
-                    "status": "ACCEPTED",
+                    "status": status_string,
                     "final_price": last_seller_response["price"],
                     "purchase_result": purchase_result,
                     "transcript": self.transcript,
