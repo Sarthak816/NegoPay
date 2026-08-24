@@ -41,7 +41,6 @@ CRITICAL RULES:
 When you decide to buy, your final steps are ALWAYS:
 1. check_mandate(amount, category)
 2. create_order(product_id, quantity)
-3. process_payment(order_id)
 """
         self.history = [SystemMessage(content=self.system_prompt)]
 
@@ -131,19 +130,11 @@ MESSAGE: [Your message to the merchant]
             return {"status": "failed", "reason": order_result["error"]}
             
         audit_trail.append({"type": "SUCCESS", "detail": f"[Razorpay API] Order Created: {order_result['razorpay_order_id']}"})
-            
-        # 3. Process Payment
-        audit_trail.append({"type": "API_CALL", "detail": f"[Razorpay API] Processing payment for {order_result['razorpay_order_id']}"})
-        pay_result = process_payment(order_result["order_id"]) # Uses internal ID for mock process_payment
-        if "error" in pay_result:
-            audit_trail.append({"type": "FAILURE", "detail": f"[Razorpay API Error] {pay_result['error']}"})
-            return {"status": "failed", "reason": pay_result["error"]}
-            
-        audit_trail.append({"type": "SUCCESS", "detail": f"[Razorpay API] Payment Captured: {pay_result.get('payment_id', 'mocked')}"})
+        audit_trail.append({"type": "SYSTEM", "detail": f"[System] Awaiting human payment confirmation for {order_result['razorpay_order_id']}."})
             
         return {
             "status": "success", 
             "order_id": order_result["razorpay_order_id"],
             "amount": final_price,
-            "receipt": "Payment captured successfully on Razorpay."
+            "receipt": "Order created successfully. Ready for checkout."
         }

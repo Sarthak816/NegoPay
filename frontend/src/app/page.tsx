@@ -10,6 +10,7 @@ export default function Home() {
   const [negotiationResult, setNegotiationResult] = useState<any>(null);
   const [negotiating, setNegotiating] = useState(false);
   const [budgetMessage, setBudgetMessage] = useState('');
+  const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
   
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -24,7 +25,6 @@ export default function Home() {
       const data = await res.json();
       setProducts(data.results || []);
       
-      // Auto-scroll to the 3-column mockups smoothly after searching
       setTimeout(() => {
         gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
@@ -35,10 +35,42 @@ export default function Home() {
     setLoading(false);
   };
 
+  const handlePayment = () => {
+    if (!negotiationResult?.purchase_result?.order_id) return;
+    
+    const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_TSiPLxrVngFkoT",
+        amount: Math.round(negotiationResult.final_price * 100),
+        currency: "INR",
+        name: "NegoPay",
+        description: "Agentic Commerce Purchase",
+        order_id: negotiationResult.purchase_result.order_id,
+        handler: function (response: any) {
+            setPaymentStatus("PAID");
+            alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
+        },
+        prefill: {
+            name: "Test User",
+            email: "test@example.com",
+            contact: "9999999999"
+        },
+        theme: {
+            color: "#2563eb"
+        }
+    };
+    
+    const rzp = new (window as any).Razorpay(options);
+    rzp.on('payment.failed', function (response: any) {
+        alert(`Payment failed: ${response.error.description}`);
+    });
+    rzp.open();
+  };
+
   const startNegotiation = async () => {
     if (!selectedProduct) return;
     setNegotiating(true);
     setNegotiationResult(null);
+    setPaymentStatus(null);
     try {
       const res = await fetch('http://localhost:8000/api/negotiate', {
         method: 'POST',
@@ -168,9 +200,18 @@ export default function Home() {
                       )}
                       
                       {negotiationResult.purchase_result && negotiationResult.purchase_result.status === 'success' && (
-                        <div className="mt-2 text-sm bg-white/50 p-2 rounded text-left break-words">
+                        <div className="mt-2 text-sm bg-white/50 p-3 rounded text-left break-words">
                           <p><strong>Razorpay Order:</strong> {negotiationResult.purchase_result.order_id}</p>
-                          <p><strong>Payment Status:</strong> {negotiationResult.purchase_result.status}</p>
+                          <p><strong>Payment Status:</strong> {paymentStatus === 'PAID' ? '✅ PAID' : '⏳ PENDING CHECKOUT'}</p>
+                          
+                          {paymentStatus !== 'PAID' && (
+                            <button 
+                              onClick={handlePayment}
+                              className="mt-3 w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold shadow-md transition"
+                            >
+                              Pay Now (₹{negotiationResult.final_price})
+                            </button>
+                          )}
                         </div>
                       )}
 
