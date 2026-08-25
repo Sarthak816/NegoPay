@@ -1,4 +1,5 @@
 import time
+import asyncio
 import uuid
 from backend.agents.buyer_agent import BuyerAgent
 from backend.agents.seller_agent import SellerAgent
@@ -38,6 +39,8 @@ class NegotiationManager:
             return {"type": "chat", "turn": turn}
 
         yield add_audit("SYSTEM", f"[MCP Call] Discovery phase initiated. Target: {self.product_id}")
+        await asyncio.sleep(0.5)
+        
         yield add_chat("BUYER", initial_buyer_message)
         
         seller_response = await self.seller.receive_inquiry(self.product_id, initial_buyer_message)
@@ -48,6 +51,7 @@ class NegotiationManager:
         last_seller_response = seller_response
         
         while round_num <= self.max_rounds:
+            await asyncio.sleep(1.5) # Theatrical delay for reading
             yield add_audit("AGENT", f"Negotiation Round {round_num}/{self.max_rounds} completed.")
             yield add_chat("SELLER", last_seller_response["message"], last_seller_response["action"], last_seller_response["price"])
             
@@ -61,6 +65,7 @@ class NegotiationManager:
             buyer_raw = await self.buyer.evaluate_offer(self.product_id, last_seller_response["price"], last_seller_response["message"])
             buyer_action, buyer_msg = self._parse_buyer_response(buyer_raw)
             
+            await asyncio.sleep(1.5) # Theatrical delay for reading
             yield add_chat("BUYER", buyer_msg, buyer_action)
             
             if buyer_action == "ACCEPT":
