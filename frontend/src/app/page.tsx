@@ -291,7 +291,7 @@ export default function Home() {
                   {!negotiationResult && !negotiating && (
                     <p className="text-gray-400 text-center mt-10">Set your budget and click Negotiate. Your buyer agent will handle the rest.</p>
                   )}
-                  {negotiating && (
+                  {negotiating && (!negotiationResult?.transcript || negotiationResult.transcript.length === 0) && (
                     <div className="animate-pulse flex items-center justify-center h-full text-blue-500 font-medium">
                       Agents are negotiating in the background...
                     </div>
@@ -307,7 +307,7 @@ export default function Home() {
                   ))}
                   
                   {/* Final Status */}
-                  {negotiationResult && (
+                  {negotiationResult && negotiationResult.status !== 'NEGOTIATING' && (
                     <div className={`mt-4 p-4 rounded-lg text-center font-bold border shrink-0 
                       ${negotiationResult.status === 'ACCEPTED' ? 'bg-green-100 text-green-800 border-green-300' : 
                         negotiationResult.status === 'REQUIRES_APPROVAL' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' : 
@@ -375,7 +375,7 @@ export default function Home() {
               {!negotiationResult && !negotiating && (
                 <p className="text-gray-500">Waiting for agent deployment...</p>
               )}
-              {negotiating && (
+              {negotiating && (!negotiationResult?.audit_trail || negotiationResult.audit_trail.length === 0) && (
                 <p className="animate-pulse text-blue-400">[SYSTEM] Agent negotiation protocol initiated...</p>
               )}
               {negotiationResult?.audit_trail?.map((log: any, i: number) => (
