@@ -168,10 +168,8 @@ export default function Home() {
     <main className="min-h-screen bg-[#F4F6F8] text-[#1D2329] pb-12 font-sans">
       <header className="bg-black text-white p-4 shadow-md sticky top-0 z-10 flex justify-between items-center">
         <div>
-          <h1 className="flex items-center gap-2">
-            <div className="w-10 h-10 overflow-hidden flex items-center justify-center">
-              <img src="/logo.png" alt="NegoPay Logo" className="w-[180%] max-w-none" />
-            </div>
+          <h1 className="flex items-center gap-3">
+            <img src="/logo.png" alt="NegoPay Logo" className="w-9 h-9 object-contain" />
             <span className="text-3xl italic font-bold tracking-tighter">NegoPay</span>
           </h1>
           <p className="text-sm opacity-80 font-medium mt-1">Agentic Commerce Gateway (Powered by Razorpay AI)</p>
