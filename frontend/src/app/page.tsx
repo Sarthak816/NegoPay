@@ -291,11 +291,7 @@ export default function Home() {
                   {!negotiationResult && !negotiating && (
                     <p className="text-gray-400 text-center mt-10">Set your budget and click Negotiate. Your buyer agent will handle the rest.</p>
                   )}
-                  {negotiating && (!negotiationResult?.transcript || negotiationResult.transcript.length === 0) && (
-                    <div className="animate-pulse flex items-center justify-center h-full text-blue-500 font-medium">
-                      Agents are negotiating in the background...
-                    </div>
-                  )}
+                  
                   {negotiationResult?.transcript?.map((turn: any, i: number) => (
                     <div key={i} className={`flex flex-col ${turn.sender === 'BUYER' ? 'items-end' : 'items-start'}`}>
                       <span className="text-xs font-bold text-gray-500 mb-1">{turn.sender === 'BUYER' ? 'Your Buyer Agent' : 'Merchant Agent'}</span>
@@ -305,6 +301,20 @@ export default function Home() {
                       </div>
                     </div>
                   ))}
+
+                  {/* Animated Typing Indicator */}
+                  {negotiating && (
+                    <div className={`flex flex-col ${(!negotiationResult?.transcript?.length || negotiationResult.transcript[negotiationResult.transcript.length - 1].sender === 'SELLER') ? 'items-end' : 'items-start'} mt-2`}>
+                      <span className="text-xs font-bold text-gray-400 mb-1">
+                        {(!negotiationResult?.transcript?.length || negotiationResult.transcript[negotiationResult.transcript.length - 1].sender === 'SELLER') ? 'Your Buyer Agent is typing...' : 'Merchant Agent is typing...'}
+                      </span>
+                      <div className={`p-4 rounded-2xl flex space-x-2 items-center h-10 ${(!negotiationResult?.transcript?.length || negotiationResult.transcript[negotiationResult.transcript.length - 1].sender === 'SELLER') ? 'bg-blue-100 text-blue-600 rounded-tr-none' : 'bg-gray-200 text-gray-500 rounded-tl-none'}`}>
+                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      </div>
+                    </div>
+                  )}
                   
                   {/* Final Status */}
                   {negotiationResult && negotiationResult.status !== 'NEGOTIATING' && (
