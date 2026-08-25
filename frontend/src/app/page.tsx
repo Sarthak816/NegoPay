@@ -393,9 +393,9 @@ export default function Home() {
           </div>
           
           {/* Audit Trail / Mission Control */}
-          <div className="bg-[#02042B] border-[#13192F] border rounded-xl shadow-sm p-6 flex flex-col h-[calc(100vh-220px)] min-h-[500px] font-mono text-[#A0AEC0]">
-            <h2 className="text-xl font-semibold border-b border-[#13192F] pb-2 mb-4 text-white">Mission Control (Audit Log)</h2>
-            <div className="flex-1 overflow-y-auto space-y-2 text-sm">
+          <div className="bg-black border-gray-800 border rounded-xl shadow-sm p-6 flex flex-col h-[calc(100vh-220px)] min-h-[500px] text-[#A0AEC0]">
+            <h2 className="text-xl font-bold border-b border-gray-800 pb-2 mb-4 text-white whitespace-nowrap overflow-hidden text-ellipsis">Mission Control</h2>
+            <div className="flex-1 overflow-y-auto space-y-2 text-sm font-mono">
               {!negotiationResult && !negotiating && (
                 <p className="text-[#A0AEC0]/70">Waiting for agent deployment...</p>
               )}
@@ -403,7 +403,7 @@ export default function Home() {
                 <p className="animate-pulse text-[#3366FF]">[SYSTEM] Agent negotiation protocol initiated...</p>
               )}
               {negotiationResult?.audit_trail?.map((log: any, i: number) => (
-                <div key={i} className={`p-2 rounded border border-[#13192F] ${log.type === 'FAILURE' ? 'bg-red-900/20 text-red-400' : log.type === 'SUCCESS' ? 'bg-[#E6F4EA]/10 text-[#2db555]' : 'bg-[#13192F]/50 text-white'}`}>
+                <div key={i} className={`p-2 rounded border border-gray-800 ${log.type === 'FAILURE' ? 'bg-red-900/20 text-red-400' : log.type === 'SUCCESS' ? 'bg-[#E6F4EA]/10 text-[#2db555]' : 'bg-gray-900/80 text-white'}`}>
                   <span className="opacity-50 text-xs mr-2">[{new Date().toLocaleTimeString()}]</span>
                   {log.detail}
                 </div>
