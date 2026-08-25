@@ -26,47 +26,53 @@ class NegotiationManager:
         self.db.add(self.neg_session)
         self.db.commit()
 
-    def start_negotiation(self, initial_buyer_message: str):
-        self.audit_trail.append({"type": "SYSTEM", "detail": f"[MCP Call] Discovery phase initiated. Target: {self.product_id}"})
-        self.transcript.append({"sender": "BUYER", "message": initial_buyer_message})
-        print(f"\n[Round 1] BUYER: {initial_buyer_message}")
+    async def stream_negotiation(self, initial_buyer_message: str):
+        def add_audit(t, d):
+            log = {"type": t, "detail": d}
+            self.audit_trail.append(log)
+            return {"type": "audit", "log": log}
+            
+        def add_chat(sender, msg, action=None, price=None):
+            turn = {"sender": sender, "message": msg, "action": action, "price": price}
+            self.transcript.append(turn)
+            return {"type": "chat", "turn": turn}
+
+        yield add_audit("SYSTEM", f"[MCP Call] Discovery phase initiated. Target: {self.product_id}")
+        yield add_chat("BUYER", initial_buyer_message)
         
-        seller_response = self.seller.receive_inquiry(self.product_id, initial_buyer_message)
-        
+        seller_response = await self.seller.receive_inquiry(self.product_id, initial_buyer_message)
         self.neg_session.initial_price = seller_response["price"]
         self.db.commit()
         
-        return self._loop(seller_response, round_num=1)
+        round_num = 1
+        last_seller_response = seller_response
         
-    def _loop(self, last_seller_response, round_num: int):
         while round_num <= self.max_rounds:
-            self.audit_trail.append({"type": "AGENT", "detail": f"Negotiation Round {round_num}/{self.max_rounds} completed."})
-            print(f"[Round {round_num}] SELLER ({last_seller_response['action']} - ₹{last_seller_response['price']}): {last_seller_response['message']}")
-            self.transcript.append({
-                "sender": "SELLER", 
-                "action": last_seller_response["action"],
-                "price": last_seller_response["price"],
-                "message": last_seller_response["message"]
-            })
+            yield add_audit("AGENT", f"Negotiation Round {round_num}/{self.max_rounds} completed.")
+            yield add_chat("SELLER", last_seller_response["message"], last_seller_response["action"], last_seller_response["price"])
             
             if last_seller_response["action"] == "DEADLOCK":
-                self.audit_trail.append({"type": "FAILURE", "detail": "[System] Seller invoked DEADLOCK. Terminating."})
+                yield add_audit("FAILURE", "[System] Seller invoked DEADLOCK. Terminating.")
                 self._close_session("DEADLOCK")
-                return {"status": "DEADLOCK", "transcript": self.transcript, "audit_trail": self.audit_trail}
+                yield {"type": "status", "status": "DEADLOCK", "final_price": None, "purchase_result": None}
+                return
                 
             # Buyer's turn to evaluate
-            buyer_raw = self.buyer.evaluate_offer(self.product_id, last_seller_response["price"], last_seller_response["message"])
+            buyer_raw = await self.buyer.evaluate_offer(self.product_id, last_seller_response["price"], last_seller_response["message"])
             buyer_action, buyer_msg = self._parse_buyer_response(buyer_raw)
             
-            print(f"[Round {round_num}] BUYER ({buyer_action}): {buyer_msg}")
-            self.transcript.append({"sender": "BUYER", "action": buyer_action, "message": buyer_msg})
+            yield add_chat("BUYER", buyer_msg, buyer_action)
             
             if buyer_action == "ACCEPT":
-                self.audit_trail.append({"type": "SUCCESS", "detail": f"[System] Buyer accepted offer at ₹{last_seller_response['price']}."})
-                print(f"\n DEAL REACHED at ₹{last_seller_response['price']}!")
+                yield add_audit("SUCCESS", f"[System] Buyer accepted offer at ₹{last_seller_response['price']}.")
                 
-                # Execute purchase
+                # Execute purchase and grab pre-purchase trail length
+                pre_len = len(self.audit_trail)
                 purchase_result = self.buyer.execute_purchase(self.product_id, last_seller_response["price"], self.audit_trail)
+                
+                # Yield any new logs appended by execute_purchase
+                for log in self.audit_trail[pre_len:]:
+                    yield {"type": "audit", "log": log}
                 
                 status_string = "ACCEPTED"
                 if purchase_result.get("status") == "requires_approval":
@@ -76,32 +82,30 @@ class NegotiationManager:
                     
                 self._close_session(status_string, final_price=last_seller_response["price"])
                 
-                return {
+                yield {
+                    "type": "status",
                     "status": status_string,
                     "final_price": last_seller_response["price"],
-                    "purchase_result": purchase_result,
-                    "transcript": self.transcript,
-                    "audit_trail": self.audit_trail
+                    "purchase_result": purchase_result
                 }
+                return
                 
             if buyer_action == "WALK_AWAY":
-                self.audit_trail.append({"type": "SYSTEM", "detail": "[System] Buyer invoked WALK_AWAY. Deal collapsed."})
-                print(f"\n BUYER WALKED AWAY.")
+                yield add_audit("SYSTEM", "[System] Buyer invoked WALK_AWAY. Deal collapsed.")
                 self._close_session("REJECTED")
-                return {"status": "WALK_AWAY", "transcript": self.transcript, "audit_trail": self.audit_trail}
+                yield {"type": "status", "status": "WALK_AWAY", "final_price": None, "purchase_result": None}
+                return
                 
             # Seller's turn to respond to counter
             round_num += 1
             if round_num > self.max_rounds:
                 break
                 
-            last_seller_response = self.seller.receive_inquiry(self.product_id, buyer_msg)
-            time.sleep(1) # Small pause for log readability
+            last_seller_response = await self.seller.receive_inquiry(self.product_id, buyer_msg)
             
-        self.audit_trail.append({"type": "FAILURE", "detail": "[System] Max negotiation rounds reached. DEADLOCK enforced."})
-        print("\n MAX ROUNDS REACHED. DEADLOCK.")
+        yield add_audit("FAILURE", "[System] Max negotiation rounds reached. DEADLOCK enforced.")
         self._close_session("DEADLOCK")
-        return {"status": "DEADLOCK", "transcript": self.transcript, "audit_trail": self.audit_trail}
+        yield {"type": "status", "status": "DEADLOCK", "final_price": None, "purchase_result": None}
 
     def _parse_buyer_response(self, content: str):
         lines = content.strip().split('\n')

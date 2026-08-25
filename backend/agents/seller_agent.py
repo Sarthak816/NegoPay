@@ -38,7 +38,7 @@ MESSAGE: [Your message to the buyer]
             return json.loads(merchant.config_json)
         return {}
 
-    def receive_inquiry(self, product_id: str, buyer_message: str):
+    async def receive_inquiry(self, product_id: str, buyer_message: str):
         product = get_product_details(product_id)
         if "error" in product:
             return {"action": "DEADLOCK", "price": 0.0, "message": "ERROR: Product not found.", "raw": ""}
@@ -71,7 +71,7 @@ PRICE: ...
 MESSAGE: ...
 """
         self.history.append(HumanMessage(content=prompt))
-        response = self.llm.invoke(self.history)
+        response = await self.llm.ainvoke(self.history)
         self.history.append(response)
         
         return self._parse_response(response.content, floor_price)

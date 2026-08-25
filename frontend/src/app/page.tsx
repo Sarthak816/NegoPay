@@ -102,24 +102,56 @@ export default function Home() {
   const startNegotiation = async () => {
     if (!selectedProduct) return;
     setNegotiating(true);
-    setNegotiationResult(null);
+    setNegotiationResult({
+      status: 'NEGOTIATING',
+      transcript: [],
+      audit_trail: []
+    });
     setPaymentStatus(null);
-    try {
-      const res = await fetch('http://localhost:8000/api/negotiate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          owner_id: 'user_123',
-          product_id: selectedProduct.id,
-          initial_message: budgetMessage || `I want to buy ${selectedProduct.name}. Can you give me a good deal?`
-        })
-      });
-      const data = await res.json();
-      setNegotiationResult(data.result);
-    } catch (e) {
-      console.error(e);
-    }
-    setNegotiating(false);
+    
+    const ws = new WebSocket('ws://localhost:8000/ws/negotiate');
+    
+    ws.onopen = () => {
+      ws.send(JSON.stringify({
+        owner_id: 'user_123',
+        product_id: selectedProduct.id,
+        initial_message: budgetMessage || `I want to buy ${selectedProduct.name}. Can you give me a good deal?`
+      }));
+    };
+    
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        
+        setNegotiationResult((prev: any) => {
+          const next = { ...prev };
+          if (!next.audit_trail) next.audit_trail = [];
+          if (!next.transcript) next.transcript = [];
+          
+          if (data.type === 'audit') {
+            next.audit_trail = [...next.audit_trail, data.log];
+          } else if (data.type === 'chat') {
+            next.transcript = [...next.transcript, data.turn];
+          } else if (data.type === 'status') {
+            next.status = data.status;
+            next.final_price = data.final_price;
+            next.purchase_result = data.purchase_result;
+          }
+          return next;
+        });
+      } catch (e) {
+        console.error("Error parsing WS message", e);
+      }
+    };
+    
+    ws.onclose = () => {
+      setNegotiating(false);
+    };
+    
+    ws.onerror = (e) => {
+      console.error('WebSocket Error:', e);
+      setNegotiating(false);
+    };
   };
 
   return (

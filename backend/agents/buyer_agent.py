@@ -44,7 +44,7 @@ When you decide to buy, your final steps are ALWAYS:
 """
         self.history = [SystemMessage(content=self.system_prompt)]
 
-    def handle_user_intent(self, user_intent: str):
+    async def handle_user_intent(self, user_intent: str):
         """Parse user intent and search for products."""
         self.history.append(HumanMessage(content=user_intent))
         
@@ -67,7 +67,7 @@ When you decide to buy, your final steps are ALWAYS:
             }
         ]
         
-        response = self.llm.invoke(self.history, tools=tools)
+        response = await self.llm.ainvoke(self.history, tools=tools)
         self.history.append(response)
         
         if response.tool_calls:
@@ -79,12 +79,12 @@ When you decide to buy, your final steps are ALWAYS:
                     self.history.append(SystemMessage(content=f"Search Results: {json.dumps(results)}"))
             
             # Get the LLM to process the search results
-            response = self.llm.invoke(self.history)
+            response = await self.llm.ainvoke(self.history)
             self.history.append(response)
             
         return response.content
 
-    def evaluate_offer(self, product_id: str, offer_price: float, merchant_message: str):
+    async def evaluate_offer(self, product_id: str, offer_price: float, merchant_message: str):
         """Called during negotiation when the seller agent makes an offer."""
         product = get_product_details(product_id)
         list_price = product.get("price", 0) if "error" not in product else "UNKNOWN"
@@ -108,7 +108,7 @@ ACTION: [ACCEPT | COUNTER | WALK_AWAY]
 MESSAGE: [Your message to the merchant]
 """
         self.history.append(SystemMessage(content=prompt))
-        response = self.llm.invoke(self.history)
+        response = await self.llm.ainvoke(self.history)
         self.history.append(response)
         return response.content
 

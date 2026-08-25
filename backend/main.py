@@ -1,10 +1,11 @@
-from fastapi import FastAPI, Depends, HTTPException, Request, BackgroundTasks
+from fastapi import FastAPI, Depends, HTTPException, Request, BackgroundTasks, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
 from typing import Optional
+import json
 
 from . import models, database
 from .mcp_server import search_products, get_product_details
@@ -46,6 +47,49 @@ class MandateUpdate(BaseModel):
 @app.get("/")
 def read_root():
     return {"status": "ok", "service": "NegoPay Backend"}
+
+@app.websocket("/ws/negotiate")
+async def websocket_negotiate(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        data = await websocket.receive_json()
+        owner_id = data.get("owner_id")
+        product_id = data.get("product_id")
+        initial_message = data.get("initial_message")
+        
+        import uuid
+        session_id = f"sess_{uuid.uuid4().hex[:8]}"
+        
+        # Get product directly using the sync helper (it's fast enough)
+        product = get_product_details(product_id)
+        if "error" in product:
+            await websocket.send_json({"type": "error", "message": "Product not found"})
+            await websocket.close()
+            return
+            
+        manager = NegotiationManager(
+            owner_id=owner_id,
+            merchant_id=product["merchant_id"],
+            product_id=product_id,
+            session_id=session_id
+        )
+        
+        async for event in manager.stream_negotiation(initial_message):
+            await websocket.send_json(event)
+            
+    except WebSocketDisconnect:
+        print(f"Client disconnected from negotiation {session_id}")
+    except Exception as e:
+        print(f"Error in websocket: {e}")
+        try:
+            await websocket.send_json({"type": "error", "message": str(e)})
+        except:
+            pass
+    finally:
+        try:
+            await websocket.close()
+        except:
+            pass
 
 @app.get("/api/mandate/{owner_id}")
 def api_get_mandate(owner_id: str, db: Session = Depends(database.get_db)):
