@@ -16,6 +16,8 @@ export default function Home() {
   const [showSettings, setShowSettings] = useState(false);
   
   const gridRef = useRef<HTMLDivElement>(null);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+  const auditEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch('http://localhost:8000/api/mandate/user_123')
@@ -23,6 +25,14 @@ export default function Home() {
       .then(data => setMandate(data))
       .catch(err => console.error("Failed to load mandate", err));
   }, []);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [negotiationResult?.transcript, negotiating]);
+
+  useEffect(() => {
+    auditEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [negotiationResult?.audit_trail, negotiating]);
 
   const saveMandate = async () => {
     try {
@@ -354,6 +364,9 @@ export default function Home() {
                       )}
                     </div>
                   )}
+                  
+                  {/* Invisible element to scroll to */}
+                  <div ref={chatEndRef} />
                 </div>
 
                 {/* Control Panel */}
@@ -394,6 +407,7 @@ export default function Home() {
                   {log.detail}
                 </div>
               ))}
+              <div ref={auditEndRef} />
             </div>
           </div>
         </div>
