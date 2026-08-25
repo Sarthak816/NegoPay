@@ -165,14 +165,6 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 p-8 text-gray-900">
-      <div className="max-w-5xl mx-auto space-y-8">
-        
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight text-blue-600">NegoPay</h1>
-            <p className="text-gray-500 mt-1">Agent-to-Agent Commerce via Razorpay</p>
     <main className="min-h-screen bg-[#F4F6F8] text-[#1D2329] pb-12 font-sans">
       {/* Header */}
       <header className="bg-[#02042B] text-white p-4 shadow-md sticky top-0 z-10 flex justify-between items-center">
