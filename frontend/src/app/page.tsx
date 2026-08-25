@@ -169,7 +169,8 @@ export default function Home() {
       {/* Header */}
       <header className="bg-[#02042B] text-white p-4 shadow-md sticky top-0 z-10 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
+          <h1 className="text-2xl font-bold flex items-center gap-3">
+            <img src="/logo.jpg" alt="NegoPay Logo" className="w-8 h-8 rounded-lg shadow-sm" />
             NegoPay
           </h1>
           <p className="text-sm opacity-80 font-medium mt-0.5">Agentic Commerce Gateway (Powered by Razorpay AI)</p>
