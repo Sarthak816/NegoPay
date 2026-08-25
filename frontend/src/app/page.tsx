@@ -253,9 +253,9 @@ export default function Home() {
         </div>
 
         {/* Main Content Area */}
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 h-[600px]">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 h-[calc(100vh-220px)] min-h-[500px] scroll-mt-24">
           {/* Marketplace Column */}
-          <div className="bg-white border-gray-200 border rounded-xl shadow-sm p-6 flex flex-col h-[600px]">
+          <div className="bg-white border-gray-200 border rounded-xl shadow-sm p-6 flex flex-col h-[calc(100vh-220px)] min-h-[500px]">
             <h2 className="text-xl font-bold border-b border-gray-100 pb-2 mb-4">Marketplace</h2>
             <div className="flex-1 overflow-y-auto space-y-3">
               {products.length === 0 && !loading && (
@@ -280,7 +280,7 @@ export default function Home() {
           </div>
 
           {/* Negotiation Column */}
-          <div className="bg-white border-gray-200 border rounded-xl shadow-sm p-6 flex flex-col h-[600px]">
+          <div className="bg-white border-gray-200 border rounded-xl shadow-sm p-6 flex flex-col h-[calc(100vh-220px)] min-h-[500px]">
             <h2 className="text-xl font-bold border-b border-gray-100 pb-2 mb-4">Agent Negotiation</h2>
             
             {!selectedProduct ? (
@@ -393,7 +393,7 @@ export default function Home() {
           </div>
           
           {/* Audit Trail / Mission Control */}
-          <div className="bg-[#02042B] border-[#13192F] border rounded-xl shadow-sm p-6 flex flex-col h-[600px] font-mono text-[#A0AEC0]">
+          <div className="bg-[#02042B] border-[#13192F] border rounded-xl shadow-sm p-6 flex flex-col h-[calc(100vh-220px)] min-h-[500px] font-mono text-[#A0AEC0]">
             <h2 className="text-xl font-semibold border-b border-[#13192F] pb-2 mb-4 text-white">Mission Control (Audit Log)</h2>
             <div className="flex-1 overflow-y-auto space-y-2 text-sm">
               {!negotiationResult && !negotiating && (
