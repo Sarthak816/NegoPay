@@ -171,7 +171,6 @@ export default function Home() {
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
             NegoPay
-            <span className="text-xs bg-[#3366FF] px-2 py-0.5 rounded-full font-medium">TEST</span>
           </h1>
           <p className="text-sm opacity-80 font-medium mt-0.5">Agentic Commerce Gateway (Powered by Razorpay AI)</p>
         </div>
