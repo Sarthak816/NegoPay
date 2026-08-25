@@ -312,17 +312,20 @@ export default function Home() {
                     </div>
                   ))}
 
-                  {/* Animated Typing Indicator */}
+                  {/* Agent Processing Indicator */}
                   {negotiating && (
-                    <div className={`flex flex-col ${(!negotiationResult?.transcript?.length || negotiationResult.transcript[negotiationResult.transcript.length - 1].sender === 'SELLER') ? 'items-end' : 'items-start'} mt-2`}>
-                      <span className="text-xs font-bold text-gray-400 mb-1">
-                        {(!negotiationResult?.transcript?.length || negotiationResult.transcript[negotiationResult.transcript.length - 1].sender === 'SELLER') ? 'Your Buyer Agent is typing...' : 'Merchant Agent is typing...'}
-                      </span>
-                      <div className={`p-4 rounded-2xl flex space-x-2 items-center h-10 ${(!negotiationResult?.transcript?.length || negotiationResult.transcript[negotiationResult.transcript.length - 1].sender === 'SELLER') ? 'bg-blue-100 text-blue-600 rounded-tr-none' : 'bg-gray-200 text-gray-500 rounded-tl-none'}`}>
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                        <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                      </div>
+                    <div className={`flex flex-col ${(!negotiationResult?.transcript?.length || negotiationResult.transcript[negotiationResult.transcript.length - 1].sender === 'SELLER') ? 'items-end' : 'items-start'} mt-4`}>
+                      {(!negotiationResult?.transcript?.length || negotiationResult.transcript[negotiationResult.transcript.length - 1].sender === 'SELLER') ? (
+                        <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-lg text-xs font-mono animate-pulse flex items-center gap-2 shadow-sm">
+                          <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
+                          [ BUYER_AGENT: COMPUTING OPTIMAL BID... ]
+                        </div>
+                      ) : (
+                        <div className="bg-gray-100 border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-xs font-mono animate-pulse flex items-center gap-2 shadow-sm">
+                          <span className="w-2 h-2 rounded-full bg-gray-500 animate-ping"></span>
+                          [ SELLER_AGENT: ANALYZING MARGIN GUARDS... ]
+                        </div>
+                      )}
                     </div>
                   )}
                   
