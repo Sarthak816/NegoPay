@@ -75,7 +75,7 @@ def create_order(product_id: str, quantity: int, session_id: str, agreed_price: 
         return {"error": "Insufficient stock"}
         
     # 2. Generate Idempotency Key
-    idempotency_key = f"idem_{session_id}_{product_id}_{uuid.uuid4().hex[:8]}"
+    idempotency_key = f"idem_{session_id}_{product_id}"
     
     # Check if already exists
     existing = db.query(models.Order).filter(models.Order.idempotency_key == idempotency_key).first()
