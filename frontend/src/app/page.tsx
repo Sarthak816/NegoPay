@@ -176,73 +176,76 @@ export default function Home() {
           <p className="text-sm opacity-80 font-medium mt-1">Agentic Commerce Gateway (Powered by Razorpay AI)</p>
         </div>
         
-        {/* Mandate Settings Toggle */}
-        <button 
-          onClick={() => setShowSettings(!showSettings)}
-          className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition"
-        >
-          ⚙️ Mandate Settings
-        </button>
-      </header>
+        <div className="relative">
+          {/* Mandate Settings Toggle */}
+          <button 
+            onClick={() => setShowSettings(!showSettings)}
+            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition"
+          >
+            ⚙️ Mandate Settings
+          </button>
 
-      {/* Mandate Settings Panel */}
-      {showSettings && (
-        <div className="bg-white border-b shadow-sm p-6 mb-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-xl font-bold mb-4">Human Control Mandate</h2>
-            <p className="text-sm text-gray-500 mb-6">Define the financial boundaries for your AI Buyer Agent. The agent cannot bypass these rules.</p>
-            
-            {mandate ? (
-              <div className="space-y-6">
-                <div>
-                  <label className="block font-bold mb-2">Max Budget per Transaction (₹)</label>
-                  <input 
-                    type="range" 
-                    min="100" max="100000" step="500"
-                    value={mandate.max_per_transaction}
-                    onChange={(e) => setMandate({...mandate, max_per_transaction: parseFloat(e.target.value)})}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#3366FF]"
-                  />
-                  <div className="text-right font-mono font-bold mt-1 text-[#3366FF]">₹{mandate.max_per_transaction}</div>
-                </div>
-
-                <div>
-                  <label className="block font-bold mb-2">Max Daily Spend (₹)</label>
-                  <input 
-                    type="range" 
-                    min="100" max="100000" step="500"
-                    value={mandate.max_daily_spend}
-                    onChange={(e) => setMandate({...mandate, max_daily_spend: parseFloat(e.target.value)})}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#3366FF]"
-                  />
-                  <div className="text-right font-mono font-bold mt-1 text-[#3366FF]">₹{mandate.max_daily_spend}</div>
-                </div>
-                
-                <div>
-                  <label className="block font-bold mb-2">Auto-Approve Limit (₹)</label>
-                  <input 
-                    type="range" 
-                    min="100" max="100000" step="500"
-                    value={mandate.require_approval_above}
-                    onChange={(e) => setMandate({...mandate, require_approval_above: parseFloat(e.target.value)})}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#3366FF]"
-                  />
-                  <div className="text-right font-mono font-bold mt-1 text-[#3366FF]">₹{mandate.require_approval_above}</div>
-                </div>
-                
-                <button 
-                  onClick={saveMandate}
-                  className="bg-[#02042B] text-white px-6 py-2 rounded-lg font-bold hover:bg-[#13192F] transition"
-                >
-                  Save Mandate
-                </button>
+          {/* Mandate Settings Panel Popup */}
+          {showSettings && (
+            <div className="absolute right-0 top-full mt-4 w-[400px] bg-white border border-gray-200 rounded-xl shadow-2xl p-6 text-black z-50">
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="text-xl font-bold">Human Control Mandate</h2>
+                <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-black">✖</button>
               </div>
-            ) : (
-              <p>Loading mandate...</p>
-            )}
-          </div>
+              <p className="text-xs text-gray-500 mb-6">Define the financial boundaries for your AI Buyer Agent. The agent cannot bypass these rules.</p>
+              
+              {mandate ? (
+                <div className="space-y-6">
+                  <div>
+                    <label className="block font-bold text-sm mb-2">Max Budget per Transaction (₹)</label>
+                    <input 
+                      type="range" 
+                      min="100" max="100000" step="500"
+                      value={mandate.max_per_transaction}
+                      onChange={(e) => setMandate({...mandate, max_per_transaction: parseFloat(e.target.value)})}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#3366FF]"
+                    />
+                    <div className="text-right font-mono font-bold mt-1 text-sm text-[#3366FF]">₹{mandate.max_per_transaction}</div>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-sm mb-2">Max Daily Spend (₹)</label>
+                    <input 
+                      type="range" 
+                      min="100" max="100000" step="500"
+                      value={mandate.max_daily_spend}
+                      onChange={(e) => setMandate({...mandate, max_daily_spend: parseFloat(e.target.value)})}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#3366FF]"
+                    />
+                    <div className="text-right font-mono font-bold mt-1 text-sm text-[#3366FF]">₹{mandate.max_daily_spend}</div>
+                  </div>
+                  
+                  <div>
+                    <label className="block font-bold text-sm mb-2">Auto-Approve Limit (₹)</label>
+                    <input 
+                      type="range" 
+                      min="100" max="100000" step="500"
+                      value={mandate.require_approval_above}
+                      onChange={(e) => setMandate({...mandate, require_approval_above: parseFloat(e.target.value)})}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#3366FF]"
+                    />
+                    <div className="text-right font-mono font-bold mt-1 text-sm text-[#3366FF]">₹{mandate.require_approval_above}</div>
+                  </div>
+                  
+                  <button 
+                    onClick={saveMandate}
+                    className="w-full bg-[#02042B] text-white px-6 py-2 rounded-lg font-bold hover:bg-[#13192F] transition shadow-md"
+                  >
+                    Save Mandate
+                  </button>
+                </div>
+              ) : (
+                <p>Loading mandate...</p>
+              )}
+            </div>
+          )}
         </div>
-      )}
+      </header>
 
       <div className="max-w-7xl mx-auto p-4 mt-6 space-y-6">
         
