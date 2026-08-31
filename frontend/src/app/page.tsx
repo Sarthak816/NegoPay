@@ -197,19 +197,31 @@ export default function Home() {
                   <label className="block font-bold mb-2">Max Budget per Transaction (₹)</label>
                   <input 
                     type="range" 
-                    min="100" max="10000" step="100"
+                    min="100" max="100000" step="500"
                     value={mandate.max_per_transaction}
                     onChange={(e) => setMandate({...mandate, max_per_transaction: parseFloat(e.target.value)})}
                     className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#3366FF]"
                   />
                   <div className="text-right font-mono font-bold mt-1 text-[#3366FF]">₹{mandate.max_per_transaction}</div>
                 </div>
+
+                <div>
+                  <label className="block font-bold mb-2">Max Daily Spend (₹)</label>
+                  <input 
+                    type="range" 
+                    min="100" max="100000" step="500"
+                    value={mandate.max_daily_spend}
+                    onChange={(e) => setMandate({...mandate, max_daily_spend: parseFloat(e.target.value)})}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#3366FF]"
+                  />
+                  <div className="text-right font-mono font-bold mt-1 text-[#3366FF]">₹{mandate.max_daily_spend}</div>
+                </div>
                 
                 <div>
                   <label className="block font-bold mb-2">Auto-Approve Limit (₹)</label>
                   <input 
                     type="range" 
-                    min="100" max="10000" step="100"
+                    min="100" max="100000" step="500"
                     value={mandate.require_approval_above}
                     onChange={(e) => setMandate({...mandate, require_approval_above: parseFloat(e.target.value)})}
                     className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#3366FF]"
