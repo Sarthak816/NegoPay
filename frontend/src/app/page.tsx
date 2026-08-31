@@ -20,7 +20,7 @@ export default function Home() {
   const auditEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/mandate/user_123')
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/mandate/user_123`)
       .then(res => res.json())
       .then(data => setMandate(data))
       .catch(err => console.error("Failed to load mandate", err));
@@ -36,7 +36,7 @@ export default function Home() {
 
   const saveMandate = async () => {
     try {
-      await fetch('http://localhost:8000/api/mandate/user_123', {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/mandate/user_123`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -56,7 +56,7 @@ export default function Home() {
   const searchProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/api/products/search', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/products/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query, max_price: null, category: null })
@@ -131,7 +131,8 @@ export default function Home() {
     });
     setPaymentStatus(null);
     
-    const ws = new WebSocket('ws://localhost:8000/ws/negotiate');
+    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/ws/negotiate';
+    const ws = new WebSocket(wsUrl);
     
     ws.onopen = () => {
       ws.send(JSON.stringify({
