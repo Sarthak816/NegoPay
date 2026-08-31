@@ -126,15 +126,11 @@ MESSAGE: [Your message to the merchant, including your specific counter price if
         audit_trail.append({"type": "SYSTEM", "detail": f"[Mandate Check] Evaluating {final_price} against limits."})
         mandate_result = check_mandate(self.owner_id, final_price, category)
         
-        if mandate_result["decision"] == "REQUIRES_APPROVAL":
-            audit_trail.append({"type": "FAILURE", "detail": f"[Mandate Blocked] {mandate_result['reason']}"})
-            return {"status": "requires_approval", "reason": mandate_result["reason"]}
-            
-        if mandate_result["decision"] != "APPROVED":
+        if mandate_result["decision"] == "DENIED":
             audit_trail.append({"type": "FAILURE", "detail": f"[Mandate Rejected] {mandate_result['reason']}"})
             return {"status": "failed", "reason": mandate_result["reason"]}
             
-        audit_trail.append({"type": "SUCCESS", "detail": "[Mandate Approved] Limits verified."})
+        audit_trail.append({"type": "SUCCESS" if mandate_result["decision"] == "APPROVED" else "SYSTEM", "detail": f"[Mandate Check] {mandate_result['reason']}"})
         
         # 2. Create Order
         audit_trail.append({"type": "API_CALL", "detail": f"[Razorpay API] Calling create_order({product_id}, qty=1, price={final_price})"})
@@ -147,8 +143,9 @@ MESSAGE: [Your message to the merchant, including your specific counter price if
         audit_trail.append({"type": "SYSTEM", "detail": f"[System] Awaiting human payment confirmation for {order_result['razorpay_order_id']}."})
             
         return {
-            "status": "success", 
+            "status": "success" if mandate_result["decision"] == "APPROVED" else "requires_approval", 
             "order_id": order_result["razorpay_order_id"],
             "amount": final_price,
+            "reason": mandate_result["reason"],
             "receipt": "Order created successfully. Ready for checkout."
         }

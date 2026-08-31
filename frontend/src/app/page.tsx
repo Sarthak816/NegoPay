@@ -110,6 +110,17 @@ export default function Home() {
     rzp.open();
   };
 
+  // Agentic Auto-Pay Trigger (Hybrid Approach)
+  useEffect(() => {
+    if (negotiationResult?.purchase_result?.status === 'success' && paymentStatus !== 'PAID') {
+      // Small delay for dramatic effect before AI automatically steals the screen
+      const timer = setTimeout(() => {
+        handlePayment();
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [negotiationResult?.purchase_result?.status]);
+
   const startNegotiation = async () => {
     if (!selectedProduct) return;
     setNegotiating(true);
@@ -359,22 +370,35 @@ export default function Home() {
                       )}
                       
                       {negotiationResult.purchase_result && negotiationResult.purchase_result.status === 'success' && (
-                        <div className="mt-2 text-sm bg-white/80 p-3 rounded text-left break-words">
+                        <div className="mt-2 text-sm bg-[#E6F4EA]/20 border border-[#2db555]/30 p-3 rounded text-left break-words">
+                          <p className="text-[#2db555] font-bold mb-1">✓ Mandate Approved (Auto-Checkout Initiated)</p>
                           <p><strong>Razorpay Order:</strong> {negotiationResult.purchase_result.order_id}</p>
                           <p><strong>Payment Status:</strong> {paymentStatus === 'PAID' ? '✅ PAID' : '⏳ PENDING CHECKOUT'}</p>
+                          
+                          {paymentStatus !== 'PAID' && (
+                            <p className="mt-2 text-xs opacity-70 animate-pulse">Launching Razorpay Checkout...</p>
+                          )}
+                        </div>
+                      )}
+
+                      {negotiationResult.purchase_result && negotiationResult.purchase_result.status === 'requires_approval' && (
+                        <div className="mt-2 text-sm bg-yellow-50 p-3 rounded border border-yellow-200 text-left break-words text-yellow-800">
+                          <p className="font-bold mb-1">⚠️ Human Approval Required</p>
+                          <p>{negotiationResult.purchase_result.reason}</p>
                           
                           {paymentStatus !== 'PAID' && (
                             <button 
                               onClick={handlePayment}
                               className="mt-3 w-full py-2 bg-[#02042B] text-white rounded-lg hover:bg-[#13192F] font-bold shadow-md transition"
                             >
-                              Pay Now (₹{negotiationResult.final_price})
+                              Approve & Pay (₹{negotiationResult.final_price})
                             </button>
                           )}
+                          {paymentStatus === 'PAID' && <p className="mt-2 text-green-700 font-bold">✅ PAID</p>}
                         </div>
                       )}
 
-                      {negotiationResult.purchase_result && negotiationResult.purchase_result.status !== 'success' && (
+                      {negotiationResult.purchase_result && negotiationResult.purchase_result.status === 'failed' && (
                         <div className="mt-2 text-sm bg-white/50 p-2 rounded text-left break-words text-red-700">
                           <p><strong>Blocked Reason:</strong> {negotiationResult.purchase_result.reason}</p>
                         </div>
