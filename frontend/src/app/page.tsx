@@ -116,7 +116,7 @@ export default function Home() {
       // Small delay for dramatic effect before AI automatically steals the screen
       const timer = setTimeout(() => {
         handlePayment();
-      }, 1500);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [negotiationResult?.purchase_result?.status]);
