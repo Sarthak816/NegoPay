@@ -92,17 +92,12 @@ async def websocket_negotiate(websocket: WebSocket):
             pass
 
 @app.get("/api/mandate/{owner_id}")
-def api_get_mandate(owner_id: str, db: Session = Depends(database.get_db)):
+def get_mandate(owner_id: str, db: Session = Depends(database.get_db)):
     mandate = db.query(models.Mandate).filter(models.Mandate.owner_id == owner_id).first()
     if not mandate:
-        mandate = models.Mandate(
-            id=f"mnd_{owner_id}", owner_id=owner_id, max_per_transaction=2000.0,
-            max_daily_spend=5000.0, allowed_categories="[]", blocked_categories='["alcohol", "tobacco"]',
-            auto_approve_below=500.0, require_approval_above=1500.0
-        )
-        db.add(mandate)
-        db.commit()
-        db.refresh(mandate)
+        from .mandate_enforcer import check_mandate
+        check_mandate(owner_id, 0.0)
+        mandate = db.query(models.Mandate).filter(models.Mandate.owner_id == owner_id).first()
     return mandate
 
 @app.post("/api/mandate/{owner_id}")
@@ -112,6 +107,7 @@ def api_update_mandate(owner_id: str, req: MandateUpdate, db: Session = Depends(
         raise HTTPException(status_code=404, detail="Mandate not found")
     
     mandate.max_per_transaction = req.max_per_transaction
+    mandate.max_daily_spend = req.max_daily_spend
     mandate.require_approval_above = req.require_approval_above
     db.commit()
     return {"status": "success"}

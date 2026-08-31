@@ -41,6 +41,7 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           max_per_transaction: mandate.max_per_transaction,
+          max_daily_spend: mandate.max_daily_spend,
           require_approval_above: mandate.require_approval_above
         })
       });
