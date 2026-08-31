@@ -29,7 +29,8 @@ class NegotiationManager:
 
     async def stream_negotiation(self, initial_buyer_message: str):
         def add_audit(t, d):
-            log = {"type": t, "detail": d}
+            import time
+            log = {"type": t, "detail": d, "timestamp": time.strftime("%I:%M:%S %p").lower()}
             self.audit_trail.append(log)
             return {"type": "audit", "log": log}
             
@@ -113,14 +114,17 @@ class NegotiationManager:
         yield {"type": "status", "status": "DEADLOCK", "final_price": None, "purchase_result": None}
 
     def _parse_buyer_response(self, content: str):
-        lines = content.strip().split('\n')
+        import re
         action = "COUNTER"
-        message = ""
-        for line in lines:
-            if line.startswith("ACTION:"):
-                action = line.replace("ACTION:", "").strip()
-            elif line.startswith("MESSAGE:"):
-                message = line.replace("MESSAGE:", "").strip()
+        message = content.strip()
+        
+        action_match = re.search(r"ACTION:\s*([^\n]+)", content)
+        if action_match:
+            action = action_match.group(1).replace("[", "").replace("]", "").strip()
+            
+        if "MESSAGE:" in content:
+            message = content.split("MESSAGE:")[1].strip()
+            
         return action, message
         
     def _close_session(self, status: str, final_price: float = None):

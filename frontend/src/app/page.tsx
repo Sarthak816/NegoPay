@@ -404,7 +404,7 @@ export default function Home() {
               )}
               {negotiationResult?.audit_trail?.map((log: any, i: number) => (
                 <div key={i} className={`p-2 rounded border border-gray-800 ${log.type === 'FAILURE' ? 'bg-red-900/20 text-red-400' : log.type === 'SUCCESS' ? 'bg-[#E6F4EA]/10 text-[#2db555]' : 'bg-gray-900/80 text-white'}`}>
-                  <span className="opacity-50 text-xs mr-2">[{new Date().toLocaleTimeString()}]</span>
+                  <span className="opacity-50 text-xs mr-2">[{log.timestamp || new Date().toLocaleTimeString()}]</span>
                   {log.detail}
                 </div>
               ))}

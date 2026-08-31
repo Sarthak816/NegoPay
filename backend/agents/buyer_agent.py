@@ -96,16 +96,19 @@ List Price: ₹{list_price}
 Offered Price: ₹{offer_price}
 Merchant Message: "{merchant_message}"
 
-CRITICAL RULE: You are negotiating on behalf of the user. The product's listed price is ₹{list_price}. You must NEVER offer more than the listed price. Your goal is to negotiate a discount or a bundle deal below the listed price. If you offer more than the listed price, you are failing your user.
+CRITICAL RULES:
+1. Your goal is to negotiate a discount below the listed price (₹{list_price}).
+2. NEVER offer more than the listed price.
+3. DO NOT REPEAT YOURSELF. If the seller rejected your previous counter-offer and gave you their "final" price, you MUST either ACCEPT their offer (if it fits your budget) or WALK_AWAY. Do not repeat the same counter-offer twice.
 
 Respond with your next action. You can either:
-1. Accept the offer (if it fits the user's budget, is below or equal to list price, and is a good deal).
-2. Counter-offer (ask for a lower price or bundle).
-3. Walk away (if it's too expensive).
+1. Accept the offer (if it is below list price and acceptable).
+2. Counter-offer (ask for a lower price, but only if you haven't asked for it already).
+3. Walk away (if they refuse to lower the price to a reasonable level).
 
 Format your response exactly like this:
 ACTION: [ACCEPT | COUNTER | WALK_AWAY]
-MESSAGE: [Your message to the merchant]
+MESSAGE: [Your message to the merchant, including your specific counter price if applicable]
 """
         self.history.append(SystemMessage(content=prompt))
         response = await self.llm.ainvoke(self.history)
