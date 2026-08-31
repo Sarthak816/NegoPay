@@ -63,6 +63,31 @@ class NegotiationManager:
                 yield {"type": "status", "status": "DEADLOCK", "final_price": None, "purchase_result": None}
                 return
                 
+            if last_seller_response["action"] == "ACCEPT":
+                yield add_audit("SUCCESS", f"[System] Seller accepted buyer's offer at ₹{last_seller_response['price']}.")
+                
+                pre_len = len(self.audit_trail)
+                purchase_result = self.buyer.execute_purchase(self.product_id, last_seller_response["price"], self.audit_trail)
+                
+                for log in self.audit_trail[pre_len:]:
+                    yield {"type": "audit", "log": log}
+                
+                status_string = "ACCEPTED"
+                if purchase_result.get("status") == "requires_approval":
+                    status_string = "REQUIRES_APPROVAL"
+                elif purchase_result.get("status") == "failed":
+                    status_string = "FAILED"
+                    
+                self._close_session(status_string, final_price=last_seller_response["price"])
+                
+                yield {
+                    "type": "status",
+                    "status": status_string,
+                    "final_price": last_seller_response["price"],
+                    "purchase_result": purchase_result
+                }
+                return
+                
             # Buyer's turn to evaluate
             buyer_raw = await self.buyer.evaluate_offer(self.product_id, last_seller_response["price"], last_seller_response["message"])
             buyer_action, buyer_msg = self._parse_buyer_response(buyer_raw)
