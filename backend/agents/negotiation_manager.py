@@ -43,6 +43,7 @@ class NegotiationManager:
         await asyncio.sleep(0.5)
         
         yield add_chat("BUYER", initial_buyer_message)
+        self.buyer.inject_user_instruction(initial_buyer_message)
         
         seller_response = await self.seller.receive_inquiry(self.product_id, initial_buyer_message)
         self.neg_session.initial_price = seller_response["price"]

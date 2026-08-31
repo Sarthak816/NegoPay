@@ -84,6 +84,11 @@ When you decide to buy, your final steps are ALWAYS:
             
         return response.content
 
+    def inject_user_instruction(self, instruction: str):
+        """Injects the user's custom budget or instruction into the agent's memory."""
+        from langchain_core.messages import SystemMessage
+        self.history.append(SystemMessage(content=f"USER'S CUSTOM INSTRUCTION FOR THIS NEGOTIATION: '{instruction}'. You MUST prioritize this instruction during your evaluation."))
+
     async def evaluate_offer(self, product_id: str, offer_price: float, merchant_message: str):
         """Called during negotiation when the seller agent makes an offer."""
         product = get_product_details(product_id)
