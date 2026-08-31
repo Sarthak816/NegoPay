@@ -41,6 +41,7 @@ class NegotiateRequest(BaseModel):
 
 class MandateUpdate(BaseModel):
     max_per_transaction: float
+    max_daily_spend: float
     require_approval_above: float
 
 # --- API Endpoints ---
