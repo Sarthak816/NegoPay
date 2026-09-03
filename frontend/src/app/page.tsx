@@ -134,23 +134,6 @@ export default function Home() {
     const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/ws/negotiate';
     const ws = new WebSocket(wsUrl);
     
-    // Safety timeout for API/Network congestion
-    const networkTimeout = setTimeout(() => {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.close();
-        setNegotiationResult((prev: any) => ({
-          ...prev,
-          status: 'FAILED',
-          audit_trail: [...(prev?.audit_trail || []), {
-            type: 'FAILURE',
-            detail: 'Network timeout: Agent communication congested. Please try again.',
-            timestamp: new Date().toLocaleTimeString()
-          }]
-        }));
-        setNegotiating(false);
-      }
-    }, 25000); // 25 seconds max
-    
     ws.onopen = () => {
       ws.send(JSON.stringify({
         owner_id: 'user_123',
@@ -179,18 +162,16 @@ export default function Home() {
           }
           return next;
         });
-      } catch (e) {
-        console.error("Error parsing WS message", e);
+      } catch (err) {
+        console.error('Failed to parse message', err);
       }
     };
     
     ws.onclose = () => {
-      clearTimeout(networkTimeout);
       setNegotiating(false);
     };
     
     ws.onerror = (e) => {
-      clearTimeout(networkTimeout);
       console.error('WebSocket Error:', e);
       setNegotiating(false);
     };
