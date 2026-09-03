@@ -182,7 +182,7 @@ export default function Home() {
       {/* Impeccable Header */}
       <header className="sticky top-0 z-40 bg-white/70 backdrop-blur-xl border-b border-zinc-200/50 px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="NegoPay Logo" className="w-8 h-8 object-contain drop-shadow-sm" />
+          <img src="/logo.png" alt="NegoPay Logo" className="w-8 h-8 object-contain invert drop-shadow-sm" />
           <div>
             <h1 className="text-2xl italic font-bold tracking-tight text-zinc-900 leading-none">NegoPay</h1>
             <p className="text-[10px] font-bold text-zinc-400 tracking-widest uppercase mt-0.5">Agentic Commerce Gateway</p>
