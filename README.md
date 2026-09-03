@@ -7,7 +7,7 @@ Rather than a standard single-agent chatbot, NegoPay facilitates **AI vs. AI neg
 ## Architecture: Dual-Agent Protocol
 
 
-`mermaid
+```mermaid
 sequenceDiagram
     actor Consumer
     participant BA as AI Buyer Agent
@@ -28,7 +28,7 @@ sequenceDiagram
     SG-->>BA: Mandate Verified (Idempotency Key Generated)
     BA->>RZ: create_order()
     RZ-->>Consumer: Autonomous Checkout Modal Initiated
-`
+```
 
 NegoPay replaces traditional cart-based checkouts with an Agent Commerce Protocol (ACP). 
 We implemented a Lightweight Agent Negotiation Protocol (LANP) utilizing structured syntaxes (`[COUNTER]`, `[ACCEPT]`) to allow rapid, sub-2-second negotiation loops over WebSockets.
