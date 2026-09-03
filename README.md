@@ -102,11 +102,13 @@ To prevent double-charging during network timeouts or agent hallucinations, ever
 5. **Access the Application:**
    Open `http://localhost:3000` in your browser.
 
-### Test Mode Credentials (For Judges)
-To test the live deployed version, use the following Razorpay Test Card when the checkout modal appears:
-* **Card Number:** 4111 1111 1111 1111
-* **Expiry:** Any future date (e.g., 12/26)
-* **CVV:** Any 3 digits (e.g., 123)
+### ⚡ Quick Testing Guide (For Judges)
+To test the live deployed version in a frictionless way (without triggering simulated OTP screens):
+1. When the Razorpay modal pops up, you may enter any dummy phone number.
+2. Select **Netbanking** (or UPI) as the payment method.
+3. Choose any bank (e.g., **SBI** or **HDFC**).
+4. Razorpay's test environment will immediately show a simulated bank screen. Click **Success**.
+*(Note: Please do not use the test Credit Card option, as Razorpay Sandbox disables international test cards by default and will trap you in a simulated OTP loop).*
 
 
 ## Testing & Automation
