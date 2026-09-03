@@ -276,11 +276,21 @@ export default function Home() {
                 <div 
                   key={p.id} 
                   onClick={() => setSelectedProduct(p)}
-                  className={`p-4 border rounded-2xl cursor-pointer transition-all duration-200 ${selectedProduct?.id === p.id ? 'border-zinc-900 bg-zinc-50/50 shadow-sm' : 'border-zinc-200/60 hover:border-zinc-300 hover:bg-zinc-50/30'}`}
+                  className={`group p-4 border rounded-2xl cursor-pointer transition-all duration-200 flex flex-col ${selectedProduct?.id === p.id ? 'border-zinc-900 bg-zinc-50/50 shadow-sm' : 'border-zinc-200/60 hover:border-zinc-300 hover:bg-zinc-50/30'}`}
                 >
                   <div className="font-semibold text-zinc-900 text-sm leading-snug mb-1">{p.name}</div>
-                  <div className="text-xs text-zinc-500 font-medium mb-3">Merchant: {p.merchant_id} <span className="opacity-50">|</span> Stock: {p.stock}</div>
-                  <div className="font-bold text-zinc-900 font-mono">₹{p.price.toLocaleString()}</div>
+                  <div className="text-xs text-zinc-500 font-medium mb-4">Merchant: {p.merchant_id} <span className="opacity-50">|</span> Stock: {p.stock}</div>
+                  
+                  <div className="mt-auto flex items-center justify-between pt-1">
+                    <div className="font-bold text-zinc-900 font-mono">₹{p.price.toLocaleString()}</div>
+                    <div className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                      selectedProduct?.id === p.id 
+                        ? 'bg-zinc-900 text-white shadow-sm' 
+                        : 'bg-white border border-zinc-200 text-zinc-600 group-hover:border-zinc-300 group-hover:text-zinc-900 shadow-sm'
+                    }`}>
+                      {selectedProduct?.id === p.id ? 'Selected' : 'Select'}
+                    </div>
+                  </div>
                 </div>
               ))}
               {products.length === 0 && !loading && (
