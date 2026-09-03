@@ -59,6 +59,22 @@ To prevent double-charging during network timeouts or agent hallucinations, ever
 
 ---
 
+
+### 💥 What Broke (And How We Got Out)
+The Razorpay Buildathon prompt asks us to share what failed and how we recovered. Building a Dual-Agent system pushed us into three very real failure states that required deep engineering fixes:
+
+**1. The Serverless DB Connection Drop (psycopg2 SSL Error)**
+* **What broke:** When migrating our backend from local SQLite to Neon Serverless PostgreSQL, the database aggressively closed idle connections. When the AI attempted to fetch product data or verify a mandate after a period of inactivity, SQLAlchemy threw a `psycopg2.OperationalError: SSL connection has been closed unexpectedly`, crashing the entire API.
+* **The Fix:** We rewrote the SQLAlchemy engine configuration to include aggressive connection pooling (`pool_pre_ping=True` and `pool_recycle=300`). This forces the backend to deterministically test the connection before trusting it, reviving the connection transparently if Neon had put the database to sleep.
+
+**2. The React State Closure Assassin (Ghost Timeouts)**
+* **What broke:** We implemented a 25-second frontend network timeout to prevent the UI from hanging if the Groq API got congested. However, due to React closure mechanics, if a user started a negotiation, backed out, and started a *second* negotiation, the original 25-second timer stayed alive in the background. It would randomly wake up and kill the *second*, perfectly healthy negotiation right in the middle of it.
+* **The Fix:** We stripped the naive frontend timer completely. We moved the failure responsibility entirely to the FastAPI backend. If the backend fails to process a Razorpay order due to network timeouts, it yields an explicit `status = "FAILED"` before gracefully closing the WebSocket, ensuring the UI stays perfectly in sync without React memory leaks.
+
+**3. The Visual Desync (Predicting the Future)**
+* **What broke:** Because Razorpay API calls take a few seconds, our backend was yielding the final chat message and the `[System] Seller Accepted` audit log at the exact same millisecond. To the user, the Mission Control log appeared to "predict" the future before they even had time to read the chat bubble.
+* **The Fix:** We adjusted the Python generator in the backend to yield the chat bubble, intentionally `await asyncio.sleep(0.8)`, and *then* yield the system audit log. This created a natural reading rhythm, forcing the UI to feel like the system was analyzing and reacting to the chat, rather than hardcoding it.
+
 ## Tech Stack
 
 * **Backend:** Python, FastAPI, WebSockets
