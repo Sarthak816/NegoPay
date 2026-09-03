@@ -102,6 +102,13 @@ To prevent double-charging during network timeouts or agent hallucinations, ever
 5. **Access the Application:**
    Open `http://localhost:3000` in your browser.
 
+### Test Mode Credentials (For Judges)
+To test the live deployed version, use the following Razorpay Test Card when the checkout modal appears:
+* **Card Number:** 4111 1111 1111 1111
+* **Expiry:** Any future date (e.g., 12/26)
+* **CVV:** Any 3 digits (e.g., 123)
+
+
 ## Testing & Automation
 NegoPay includes an automated test suite to mathematically prove the integrity of the Mandate Enforcer. Run the tests using `pytest`:
 ```bash

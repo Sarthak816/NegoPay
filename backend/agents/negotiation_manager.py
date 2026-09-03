@@ -54,16 +54,18 @@ class NegotiationManager:
         
         while round_num <= self.max_rounds:
             await asyncio.sleep(1.5) # Theatrical delay for reading
-            yield add_audit("AGENT", f"Negotiation Round {round_num}/{self.max_rounds} completed.")
             yield add_chat("SELLER", last_seller_response["message"], last_seller_response["action"], last_seller_response["price"])
+            yield add_audit("AGENT", f"Negotiation Round {round_num}/{self.max_rounds} completed.")
             
             if last_seller_response["action"] == "DEADLOCK":
+                await asyncio.sleep(0.5)
                 yield add_audit("FAILURE", "[System] Seller invoked DEADLOCK. Terminating.")
                 self._close_session("DEADLOCK")
                 yield {"type": "status", "status": "DEADLOCK", "final_price": None, "purchase_result": None}
                 return
                 
             if last_seller_response["action"] == "ACCEPT":
+                await asyncio.sleep(0.8) # Let user read the chat before log appears
                 yield add_audit("SUCCESS", f"[System] Seller accepted buyer's offer at ₹{last_seller_response['price']}.")
                 
                 pre_len = len(self.audit_trail)
@@ -96,6 +98,7 @@ class NegotiationManager:
             yield add_chat("BUYER", buyer_msg, buyer_action)
             
             if buyer_action == "ACCEPT":
+                await asyncio.sleep(0.8) # Let user read the chat before log appears
                 yield add_audit("SUCCESS", f"[System] Buyer accepted offer at ₹{last_seller_response['price']}.")
                 
                 # Execute purchase and grab pre-purchase trail length
