@@ -60,7 +60,7 @@ To prevent double-charging during network timeouts or agent hallucinations, ever
 ---
 
 
-### 💥 What Broke (And How We Got Out)
+### Failure Recovery: What Broke (And How We Got Out)
 The Razorpay Buildathon prompt asks us to share what failed and how we recovered. Building a Dual-Agent system pushed us into three very real failure states that required deep engineering fixes:
 
 **1. The Serverless DB Connection Drop (psycopg2 SSL Error)**
@@ -118,7 +118,7 @@ The Razorpay Buildathon prompt asks us to share what failed and how we recovered
 5. **Access the Application:**
    Open `http://localhost:3000` in your browser.
 
-### ⚡ Quick Testing Guide (For Judges)
+### Quick Testing Guide (For Judges)
 To test the live deployed version in a frictionless way (without triggering simulated OTP screens):
 1. When the Razorpay modal pops up, you may enter any dummy phone number.
 2. Select **Netbanking** (or UPI) as the payment method.
