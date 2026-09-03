@@ -117,7 +117,67 @@ export default function Home() {
       const timer = setTimeout(() => {
         handlePayment();
       }, 2000);
-      return (
+      return () => clearTimeout(timer);
+    }
+  }, [negotiationResult?.purchase_result?.status]);
+
+  const startNegotiation = async () => {
+    if (!selectedProduct) return;
+    setNegotiating(true);
+    setNegotiationResult({
+      status: 'NEGOTIATING',
+      transcript: [],
+      audit_trail: []
+    });
+    setPaymentStatus(null);
+    
+    const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/ws/negotiate';
+    const ws = new WebSocket(wsUrl);
+    
+    ws.onopen = () => {
+      ws.send(JSON.stringify({
+        owner_id: 'user_123',
+        product_id: selectedProduct.id,
+        initial_message: budgetMessage || `I want to buy ${selectedProduct.name}. Can you give me a good deal?`
+      }));
+    };
+    
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        
+        setNegotiationResult((prev: any) => {
+          const next = { ...prev };
+          if (!next.audit_trail) next.audit_trail = [];
+          if (!next.transcript) next.transcript = [];
+          
+          if (data.type === 'audit') {
+            next.audit_trail = [...next.audit_trail, data.log];
+          } else if (data.type === 'chat') {
+            next.transcript = [...next.transcript, data.turn];
+          } else if (data.type === 'status') {
+            next.status = data.status;
+            next.final_price = data.final_price;
+            next.purchase_result = data.purchase_result;
+          }
+          return next;
+        });
+      } catch (e) {
+        console.error("Error parsing WS message", e);
+      }
+    };
+    
+    ws.onclose = () => {
+      setNegotiating(false);
+    };
+    
+    ws.onerror = (e) => {
+      console.error('WebSocket Error:', e);
+      setNegotiating(false);
+    };
+  };
+
+  return (
     <main className="min-h-screen bg-zinc-50 text-zinc-900 pb-12 font-sans selection:bg-zinc-200 antialiased">
       {/* Impeccable Header */}
       <header className="sticky top-0 z-40 bg-white/70 backdrop-blur-xl border-b border-zinc-200/50 px-6 py-4 flex justify-between items-center">
