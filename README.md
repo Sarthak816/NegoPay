@@ -6,6 +6,30 @@ Rather than a standard single-agent chatbot, NegoPay facilitates **AI vs. AI neg
 
 ## Architecture: Dual-Agent Protocol
 
+
+`mermaid
+sequenceDiagram
+    actor Consumer
+    participant BA as AI Buyer Agent
+    participant SA as AI Seller Agent
+    participant SG as Deterministic Guards
+    participant RZ as Razorpay API
+
+    Consumer->>BA: Set Mandate (Max Budget: ₹5,000)
+    Note over BA, SA: LANP (Lightweight Agent Negotiation Protocol)
+    BA->>SA: [OFFER] I want to buy this for ₹4,000
+    SA->>SG: Check Floor Price (Margin Guard)
+    SG-->>SA: Approved (Above Floor)
+    SA->>BA: [COUNTER] I can do ₹4,500
+    BA->>SA: [ACCEPT] ₹4,500 agreed
+    
+    Note over BA, SG: Pre-Transaction Verification
+    BA->>SG: Verify Mandate (₹4,500 vs ₹5,000 limits)
+    SG-->>BA: Mandate Verified (Idempotency Key Generated)
+    BA->>RZ: create_order()
+    RZ-->>Consumer: Autonomous Checkout Modal Initiated
+`
+
 NegoPay replaces traditional cart-based checkouts with an Agent Commerce Protocol (ACP). 
 We implemented a Lightweight Agent Negotiation Protocol (LANP) utilizing structured syntaxes (`[COUNTER]`, `[ACCEPT]`) to allow rapid, sub-2-second negotiation loops over WebSockets.
 
