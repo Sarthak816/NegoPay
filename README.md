@@ -1,5 +1,10 @@
 # NegoPay: Agentic Commerce Gateway
 
+
+### Live Demo
+* **Frontend:** [https://negopay-beige.vercel.app](https://negopay-beige.vercel.app)
+* **Backend:** [https://negopay.onrender.com](https://negopay.onrender.com)
+
 NegoPay is a true Dual-Agent Autonomous Negotiation engine built for the Razorpay AI Buildathon (Track 1: Agentic Commerce). 
 
 Rather than a standard single-agent chatbot, NegoPay facilitates **AI vs. AI negotiation**. A User-configured AI Buyer Agent natively negotiates pricing, terms, and discounts with a Merchant-configured AI Seller Agent. If the agents reach an agreement that falls within the user's financial mandate, NegoPay automatically triggers a Razorpay checkout.
