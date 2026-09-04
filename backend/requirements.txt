@@ -10,3 +10,4 @@ langchain-openai
 langchain-anthropic
 
 psycopg2-binary==2.9.9
+langchain-groq
