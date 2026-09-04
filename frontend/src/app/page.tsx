@@ -10,6 +10,17 @@ export default function Home() {
   const [negotiationResult, setNegotiationResult] = useState<any>(null);
   const [negotiating, setNegotiating] = useState(false);
   const [budgetMessage, setBudgetMessage] = useState('');
+
+  const [receiptState, setReceiptState] = useState<{
+    show: boolean;
+    status: 'success' | 'failed';
+    paymentId?: string;
+    errorMsg?: string;
+    amount?: number;
+    productName?: string;
+    orderId?: string;
+  } | null>(null);
+
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
   
   const [mandate, setMandate] = useState<any>(null);
@@ -45,11 +56,11 @@ export default function Home() {
           require_approval_above: mandate.require_approval_above
         })
       });
-      alert('Mandate Updated Successfully!');
+      /* alert removed */
       setShowSettings(false);
     } catch (e) {
       console.error(e);
-      alert('Failed to update mandate');
+      /* alert removed */
     }
   };
 
@@ -78,7 +89,7 @@ export default function Home() {
     if (!negotiationResult?.purchase_result?.order_id) return;
     
     if (!(window as any).Razorpay) {
-        alert("Razorpay SDK failed to load. Please check your connection or refresh the page.");
+        setReceiptState({show: true, status: 'failed', errorMsg: 'Razorpay SDK failed to load. Please check connection.'});
         return;
     }
 
@@ -91,7 +102,7 @@ export default function Home() {
         order_id: negotiationResult.purchase_result.order_id,
         handler: function (response: any) {
             setPaymentStatus("PAID");
-            alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
+            setReceiptState({show: true, status: 'success', paymentId: response.razorpay_payment_id, orderId: negotiationResult.purchase_result.order_id, amount: negotiationResult.final_price, productName: selectedProduct.name});
         },
         prefill: {
             name: "Test User",
@@ -105,7 +116,7 @@ export default function Home() {
     
     const rzp = new (window as any).Razorpay(options);
     rzp.on('payment.failed', function (response: any) {
-        alert(`Payment failed: ${response.error.description}`);
+        setReceiptState({show: true, status: 'failed', errorMsg: response.error.description, orderId: negotiationResult?.purchase_result?.order_id, amount: negotiationResult?.final_price, productName: selectedProduct?.name});
     });
     rzp.open();
   };
@@ -452,6 +463,65 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {receiptState && receiptState.show && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[24px] shadow-2xl overflow-hidden max-w-sm w-full border border-black/5 animate-in zoom-in-95 duration-200">
+            <div className={`p-8 text-center ${receiptState.status === 'success' ? 'bg-[#f0fdf4]' : 'bg-[#fef2f2]'}`}>
+              <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-5 shadow-sm ${receiptState.status === 'success' ? 'bg-[#dcfce7] text-[#166534]' : 'bg-[#fee2e2] text-[#991b1b]'}`}>
+                {receiptState.status === 'success' ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                )}
+              </div>
+              <h2 className={`text-2xl font-bold tracking-tight ${receiptState.status === 'success' ? 'text-[#166534]' : 'text-[#991b1b]'}`}>
+                {receiptState.status === 'success' ? 'Payment Successful' : 'Payment Failed'}
+              </h2>
+              <p className="text-sm mt-2 opacity-80 text-zinc-600 font-medium">
+                 {receiptState.status === 'success' ? 'Your transaction has been securely processed.' : receiptState.errorMsg}
+              </p>
+            </div>
+            
+            <div className="px-8 py-6 border-t border-dashed border-zinc-200 bg-zinc-50/50">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-zinc-500 font-medium">Item</span>
+                  <span className="font-semibold text-zinc-900 truncate max-w-[150px]">{receiptState.productName || 'N/A'}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-zinc-500 font-medium">Amount</span>
+                  <span className="font-semibold text-zinc-900">₹{receiptState.amount?.toLocaleString() || '0'}</span>
+                </div>
+                {receiptState.orderId && (
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-zinc-500 font-medium">Order ID</span>
+                    <span className="font-mono text-[11px] font-bold text-zinc-800 bg-zinc-200/50 px-2 py-1 rounded">{receiptState.orderId}</span>
+                  </div>
+                )}
+                {receiptState.paymentId && (
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-zinc-500 font-medium">Transaction ID</span>
+                    <span className="font-mono text-[11px] font-bold text-zinc-800 bg-zinc-200/50 px-2 py-1 rounded">{receiptState.paymentId}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div className="p-6 bg-white border-t border-zinc-100 flex gap-3">
+               <button onClick={() => setReceiptState(null)} className="flex-1 py-3 rounded-xl border border-zinc-200 text-sm font-bold text-zinc-700 hover:bg-zinc-50 transition-colors">
+                 Close
+               </button>
+               {receiptState.status === 'success' && (
+                 <button onClick={() => window.print()} className="flex-1 py-3 rounded-xl bg-black text-white text-sm font-bold hover:bg-zinc-800 transition-colors shadow-md">
+                   Print Receipt
+                 </button>
+               )}
+            </div>
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }
