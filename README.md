@@ -3,7 +3,7 @@
 
 ### Live Demo
 * **Frontend:** [https://negopay-beige.vercel.app](https://negopay-beige.vercel.app)
-* **Backend:** [https://negopay.onrender.com](https://negopay.onrender.com)
+* **Backend:** [https://negopay-backend-private.onrender.com](https://negopay-backend-private.onrender.com)
 
 NegoPay is a true Dual-Agent Autonomous Negotiation engine built for the Razorpay AI Buildathon (Track 1: Agentic Commerce). 
 
